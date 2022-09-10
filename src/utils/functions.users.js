@@ -41,7 +41,7 @@ async function createNewUser(email, password, parent_referal, otp) {
 }
 
 async function addNewUser(params) {
-  const { email, name, mobile_number, password, parent_ref_code } = params;
+  const { email, name, mobile_number, password, parent_ref_code, promoterID } = params;
   if (email && mobile_number && password && name) {
     const hashedPassword = await createHash(password);
     const user_id = createUniqueID((type = "user"));
@@ -58,11 +58,13 @@ async function addNewUser(params) {
         created_on: creation_time,
         self_ref_code: "",
         parent_ref_code: parent_ref_code ? parent_ref_code : '',
+        promoter_id: promoterID,
         is_email_verified: email ? true : false,
         is_mobile_verified: mobile_number ? true : false,
       };
       console.log(data)
       const newUser = await User.create(data);
+      await User.updateOne({self_ref_code: promoterID},{$inc: {"directs": 1}})
       if (newUser) {
         return newUser;
       } else {

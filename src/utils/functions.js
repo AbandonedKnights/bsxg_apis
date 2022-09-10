@@ -13,7 +13,7 @@ function createUniqueID(type = 'user') {
     let id = '';
     switch (type) {
         case 'user':
-            id = unique_string + '/u';
+            id = "BSXG"+unique_string+ '/u';
             break;
         case 'sell_order':
             id = 'order$' + unique_string + '/s';
@@ -31,7 +31,7 @@ function createUniqueID(type = 'user') {
             id = 'history$' + unique_string;
             break;
         default:
-            id = unique_string + '/u';
+            id = "BSXG"+unique_string+ '/u';
             break;
     }
     return id;

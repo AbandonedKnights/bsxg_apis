@@ -19,6 +19,7 @@ const {
 } = require("../utils/functions.users");
 
 const { validateUserId } = require("../utils/validator");
+const { getPromoter } = require("../helpers/helpers");
 
 async function registerNewUser(req, res) {
   try {
@@ -36,7 +37,7 @@ async function registerNewUser(req, res) {
         ? req.body.parent_ref_code
         : ""
       : "";
-    console.log(password !== confirm_password);
+    //console.log(password !== confirm_password);
     if (password !== confirm_password) {
       return res.status(400).json({
         message: "password and confirm password must be same",
@@ -50,7 +51,7 @@ async function registerNewUser(req, res) {
      * -1   : something went wrong
      * -2   : please provide email
      */
-     const userStatusCodes = {
+    const userStatusCodes = {
       "-2": "Please provide email!",
       "-1": "Something went wrong, please try again!",
       1: "Email already exist, but email is not verified!",
@@ -61,59 +62,66 @@ async function registerNewUser(req, res) {
       return res.status(400).json({ message: userStatusCodes[userStatus] });
     } */
 
-    let newUser = await addNewUser({email,name, mobile_number, password, parent_ref_code});
-    if (!newUser) {
-      return res.status(400).json({
-        message: "Something went wrong!",
-      });
-    } else {
-      if (employee) {
-        await User.updateOne(
-          { user_id: newUser.user_id },
-          {
-            $set: {
-              user_role: 1, // for employee
-              is_email_verified: 1,
-              mobile_number: mobile_number,
-              ask_login_otp: 1,
-              admin_permission: admin_permission,
-            },
-          }
-        );
-      } else {
-        const Wallets = require("../models/wallets");
-        const user_wallet = await Wallets.findOne({
-          user: newUser.user_id,
-          wallet_type: "BSXG",
-        });
-        if (user_wallet && user_wallet.wallet_address) {
-          console.log("Allready created!");
+    if (parent_ref_code.length > 0) {
+      const promoterID = await getPromoter(parent_ref_code);
+      if (promoterID) {
+        console.log("Promoter ID :: ", promoterID);
+        let newUser = await addNewUser({ email, name, mobile_number, password, parent_ref_code, promoterID });
+        console.log("new user :: ", newUser);
+        if (!newUser) {
+          return res.status(400).json({
+            message: "Something went wrong!",
+          });
         } else {
-          /**
-           * address creation
-           */
-          const { createUserWallets } = require("../utils/function.wallets");
-          const iscreated = await createUserWallets(newUser.user_id);
-          if (iscreated) {
-            console.log("Wallets Created!");
-            /**
-             * distribute
-             *
-             */
-            await generateReferalCode(newUser.user_id);
-            // await distributeReferal(user_id);
-          } else console.log("Wallets couldn't");
-        }
+          if (employee) {
+            await User.updateOne(
+              { user_id: newUser.user_id },
+              {
+                $set: {
+                  user_role: 1, // for employee
+                  is_email_verified: 1,
+                  mobile_number: mobile_number,
+                  ask_login_otp: 1,
+                  admin_permission: admin_permission,
+                },
+              }
+            );
+          } else {
+            const Wallets = require("../models/wallets");
+            const user_wallet = await Wallets.findOne({
+              user: newUser.user_id,
+              wallet_type: "BSXG",
+            });
+            if (user_wallet && user_wallet.wallet_address) {
+              console.log("Allready created!");
+            } else {
+              
+              const { createUserWallets } = require("../utils/function.wallets");
+              const iscreated = await createUserWallets(newUser.user_id);
+              if (iscreated) {
+                console.log("Wallets Created!");
+                await generateReferalCode(newUser.user_id);
+                // await distributeReferal(user_id);
+              } else console.log("Wallets couldn't");
+            }
 
+          }
+        }
+        return res.status(200).json({
+          params: {
+            user_id: newUser.user_id,
+            ev: false,
+          },
+          message: "Congratulations, registration successful.",
+        });
+      } else {
+        return res.status(400).json({ message: "Please provide valid sponsor id." });
       }
+
+    } else {
+      return res.status(400).json({ message: "Please provide valid sponsor id." });
     }
-    return res.status(200).json({
-      params: {
-        user_id: newUser.user_id,
-        ev: false,
-      },
-      message: "Congratulations, registration successful.",
-    });
+
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -217,7 +225,7 @@ async function registerUser(req, res) {
     /**
      * sending otp on the email of the user
      */
-     sendOTP(email, otp);
+    sendOTP(email, otp);
     return res.json({
       status: 200,
       error: false,
@@ -597,15 +605,15 @@ async function loginUser(req, res) {
   try {
     const { email, mobile, password, otp } = req.body;
     const params = [];
-    if(email) {
-      params.push({email: email});
+    if (email) {
+      params.push({ email: email });
     }
-    if(mobile) {
-      params.push({mobile_number: mobile});
+    if (mobile) {
+      params.push({ mobile_number: mobile });
     }
     if (password) {
       //const user_data = await User.findOne({ email: email });
-      const user_data = await User.findOne({$or:params})
+      const user_data = await User.findOne({ $or: params })
       if (user_data) {
         /**
          * need to write logic
@@ -615,8 +623,8 @@ async function loginUser(req, res) {
           password
         );
         if (isfound) {
-          if(user_data.authenticator == 2) {
-            if(!otp) {
+          if (user_data.authenticator == 2) {
+            if (!otp) {
               return res.status(400).json({
                 message: "Your Google Authenticator On Please Enter The OTP",
               });
@@ -649,55 +657,55 @@ async function loginUser(req, res) {
                 message: "Invalid OTP",
               });
             }
-          } else if(user_data.authenticator == 1) {
-              const { verifyOTP } = require("../utils/validator");
-              const OtpBuffer = require("../models/otp_buffer");
-              const OTP_LENGTH = 6;
-              try {
-                if (email && otp && otp.toString().length == OTP_LENGTH) {
-                  const otp_object = await OtpBuffer.findOne({ email: email });
-                  if (verifyOTP(otp_object.mobile_otp, otp)) {
-                    await OtpBuffer.updateOne(
-                      { email: email },
-                      {
-                        $set: {
-                          mobile_otp: null,
-                        },
-                      }
-                    );
-                    return res.status(200).json({
-                      status: 200,
-                      error: false,
-                      params: {
-                        role: user_data.user_role ? user_data.user_role : 0,
-                        ev: user_data.is_email_verified
-                          ? user_data.is_email_verified
-                          : false,
-                        ask_login_otp: user_data.ask_login_otp,
-                        mobile_no: user_data.mobile_number ? user_data.mobile_number : 0,
-                        user_id: user_data.user_id ? user_data.user_id : undefined,
+          } else if (user_data.authenticator == 1) {
+            const { verifyOTP } = require("../utils/validator");
+            const OtpBuffer = require("../models/otp_buffer");
+            const OTP_LENGTH = 6;
+            try {
+              if (email && otp && otp.toString().length == OTP_LENGTH) {
+                const otp_object = await OtpBuffer.findOne({ email: email });
+                if (verifyOTP(otp_object.mobile_otp, otp)) {
+                  await OtpBuffer.updateOne(
+                    { email: email },
+                    {
+                      $set: {
+                        mobile_otp: null,
                       },
-                      message: "Login successfully!",
-                    });
-                  } else {
-                    return res.status(400).json({
-                      message: "Invalid OTP",
-                    });
-                  }
+                    }
+                  );
+                  return res.status(200).json({
+                    status: 200,
+                    error: false,
+                    params: {
+                      role: user_data.user_role ? user_data.user_role : 0,
+                      ev: user_data.is_email_verified
+                        ? user_data.is_email_verified
+                        : false,
+                      ask_login_otp: user_data.ask_login_otp,
+                      mobile_no: user_data.mobile_number ? user_data.mobile_number : 0,
+                      user_id: user_data.user_id ? user_data.user_id : undefined,
+                    },
+                    message: "Login successfully!",
+                  });
                 } else {
                   return res.status(400).json({
-                    message: "Your Mobile Authenticator On Please Enter The OTP",
+                    message: "Invalid OTP",
                   });
                 }
-              } catch (error) {
-                console.log(
-                  "Error: from: src>controller>auth.js>loginUser: ",
-                  error.message
-                );
+              } else {
                 return res.status(400).json({
-                  message: "Something went wrong, please try again!",
+                  message: "Your Mobile Authenticator On Please Enter The OTP",
                 });
               }
+            } catch (error) {
+              console.log(
+                "Error: from: src>controller>auth.js>loginUser: ",
+                error.message
+              );
+              return res.status(400).json({
+                message: "Something went wrong, please try again!",
+              });
+            }
           } else {
             return res.status(200).json({
               status: 200,
@@ -854,39 +862,39 @@ async function sendEmailCode(req, res) {
   try {
     const { user_id, email } = req.body;
     if (validateUserId(user_id) && email) {
-        // generate new otp
-        const otp = generateOTP();
-        if (!otp) {
-          return res.status(400).json({
-            message: "Something went wrong!",
+      // generate new otp
+      const otp = generateOTP();
+      if (!otp) {
+        return res.status(400).json({
+          message: "Something went wrong!",
+        });
+      }
+      // set it to database
+      if (email) {
+        const otp_status = await setEmailOtp({ email, otp, user_id });
+        if (otp_status) {
+          // send as mail
+          sendOTP(email, otp);
+          await User.updateOne({ user_id: user_id }, {
+            $set: {
+              email: email
+            }
+          })
+          return res.json({
+            status: 200,
+            error: false,
+            message: "Email sent successfully",
           });
-        }
-        // set it to database
-        if (email) {
-          const otp_status = await setEmailOtp({ email, otp, user_id });
-          if (otp_status) {
-            // send as mail
-            sendOTP(email, otp);
-            await User.updateOne({user_id:user_id},{
-              $set: {
-                email:email
-              }
-            })
-            return res.json({
-              status: 200,
-              error: false,
-              message: "Email sent successfully",
-            });
-          } else {
-            return res.status(400).json({
-              message: "Something went wrong",
-            });
-          }
         } else {
           return res.status(400).json({
-            message: "Please Enter Email!",
+            message: "Something went wrong",
           });
         }
+      } else {
+        return res.status(400).json({
+          message: "Please Enter Email!",
+        });
+      }
     } else {
       return res.status(400).json({
         message: "Invalid Request",
@@ -945,11 +953,11 @@ async function setGoogleAuth(req, res) {
   const User = require("../models/user");
   const { validateUserId } = require("../utils/validator");
   try {
-  
+
     const { user_id } = req.body;
     if (user_id && validateUserId(user_id)) {
       const speakeasy = require("speakeasy-latest");
-      var secret = speakeasy.generateSecret({length: 20, name:'BSXG'});
+      var secret = speakeasy.generateSecret({ length: 20, name: 'BSXG' });
 
       if (secret) {
         await User.updateOne(
@@ -992,9 +1000,9 @@ async function setGoogleAuthOTP(req, res) {
   const { validateUserId } = require("../utils/validator");
   try {
     const { user_id, status, otp, action } = req.body;
-    const user_data = await User.findOne({user_id:user_id});
+    const user_data = await User.findOne({ user_id: user_id });
     if (user_data && validateUserId(user_id)) {
-      if(action == 'g' && otp) {
+      if (action == 'g' && otp) {
         const speakeasy = require("speakeasy-latest");
         const { base32: secret } = user_data.secret_key;
         var tokenValidates = speakeasy.totp.verify({
@@ -1017,16 +1025,16 @@ async function setGoogleAuthOTP(req, res) {
             error: false,
             message: "Successfully updated",
           });
-        
-      } else {
-        return res.json({
-          status: 400,
-          error: true,
-          message: "Not Updated",
-        });
-      }
-      } else if(action == 'm') {
-        if(user_data.is_mobile_verified && user_data.mobile_number) {
+
+        } else {
+          return res.json({
+            status: 400,
+            error: true,
+            message: "Not Updated",
+          });
+        }
+      } else if (action == 'm') {
+        if (user_data.is_mobile_verified && user_data.mobile_number) {
           await User.updateOne(
             { _id: user_data._id },
             {
@@ -1129,59 +1137,59 @@ async function getGoogleAuthNew(req, res) {
   const OtpBuffer = require("../models/otp_buffer");
   const fetch = require("cross-fetch");
   try {
-    const { email,mobile, password } = req.body;
+    const { email, mobile, password } = req.body;
     const params = [];
-    if(email) {
-      params.push({email: email});
+    if (email) {
+      params.push({ email: email });
     }
-    if(mobile) {
-      params.push({mobile_number: mobile});
+    if (mobile) {
+      params.push({ mobile_number: mobile });
     }
     if (password) {
       //const user_data = await User.findOne({ email: email });
-      const user_data = await User.findOne({$or:params})
+      const user_data = await User.findOne({ $or: params })
       if (user_data) {
-       if (user_data.authenticator == 1) {
-            if (email && user_data.mobile_number) {
-              const otp = generateOTP();
-              if (otp && isNaN(parseInt(otp)) == false) {
-                  await fetch(
-                    `https://2factor.in/API/V1/87802cca-1c48-11ec-a13b-0200cd936042/SMS/${user_data.mobile_number}/${otp}`
-                  );
-                  await OtpBuffer.updateOne(
-                    { email: email },
-                    {
-                      $set: {
-                        mobile_otp: otp + "_" + Date.now(),
-                      },
-                    }
-                  );
-                  return res.json({
-                    status: 200,
-                    error: false,
-                    authenticator_status: user_data.authenticator?user_data.authenticator:0,
-                    message: "OTP Send",
-                  });
-                
-              } else {
-                return res.json({
-                  status: 400,
-                  error: true,
-                  message: "Somthing Went Wrong!",
-                });
-              }
+        if (user_data.authenticator == 1) {
+          if (email && user_data.mobile_number) {
+            const otp = generateOTP();
+            if (otp && isNaN(parseInt(otp)) == false) {
+              await fetch(
+                `https://2factor.in/API/V1/87802cca-1c48-11ec-a13b-0200cd936042/SMS/${user_data.mobile_number}/${otp}`
+              );
+              await OtpBuffer.updateOne(
+                { email: email },
+                {
+                  $set: {
+                    mobile_otp: otp + "_" + Date.now(),
+                  },
+                }
+              );
+              return res.json({
+                status: 200,
+                error: false,
+                authenticator_status: user_data.authenticator ? user_data.authenticator : 0,
+                message: "OTP Send",
+              });
+
             } else {
               return res.json({
                 status: 400,
                 error: true,
-                message: "Invalid Request",
+                message: "Somthing Went Wrong!",
               });
             }
+          } else {
+            return res.json({
+              status: 400,
+              error: true,
+              message: "Invalid Request",
+            });
+          }
         }
         return res.json({
           status: 200,
           error: false,
-          authenticator_status: user_data.authenticator?user_data.authenticator:0,
+          authenticator_status: user_data.authenticator ? user_data.authenticator : 0,
           message: "success",
         });
       } else {
