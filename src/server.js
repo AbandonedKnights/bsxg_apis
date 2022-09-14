@@ -869,4 +869,4 @@ function addApisInDoc(req, res) {
   }
 }
 
-getPromoter("BSXG10001")
+//getPromoter("BSXG10001")
