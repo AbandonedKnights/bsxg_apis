@@ -3,8 +3,6 @@ const Wallets = require('../models/wallets');
 const ColdWallet = require('../models/wallet_cold');
 const HotWallet = require('../models/wallet_hot');
 var DepositHistory = require('../models/deposite_history');
-
-const suppotedCurrency = require('../models/suppoted_currency');
 const dex = [
     {
         "anonymous": false,
@@ -124,13 +122,14 @@ async function updateUserDepositNext(wallet_list,index) {
                 console.log(wallet.wallet_type)
                 let wallet_price = fl.find((item)=>item.symbol == 'TRX');
                 let decimal = 1e6;
-                const ds = await fetch(`https://api.trongrid.io/v1/accounts/${wallet.wallet_address}`);//TBGXMT56vCd7H1jqYUW5RtJYbmqfJ3zM8p`);//${wallet.wallet_address}`);//);
+                const ds = await fetch(`https://api.shasta.trongrid.io/v1/accounts/${wallet.wallet_address}`);//TBGXMT56vCd7H1jqYUW5RtJYbmqfJ3zM8p`);//${wallet.wallet_address}`);//);
                 const dt = await ds.json();
                 // console.log(dt['data'][0], "trx");
                 if (dt && dt['data'] && dt['data'].length > 0 && dt['data'][0]) {
                     // trc10 = dt['data'][0].assetV2 ? dt['data'][0].assetV2 : [];
                     // trc20 = dt['data'][0].trc20.length > 0 ? dt['data'][0].trc20 : [];
                     let trx_balance = dt['data'][0].balance;
+                    console.log("trx_balance", trx_balance);
                     if (trx_balance > 0) {
                         /** 
                          * perform transaction of trx
@@ -759,7 +758,7 @@ async function captureCurrency(d) {
     try {
             let address = d.wallet_address;
             let private_key = d.private_key;
-            let symbol = d.symbol;
+            let symbol = d.wallet_type;
             let _id = d._id;
             let cold_wallet = await ColdWallet.findOne({
                 wallet_type: symbol.toUpperCase()
@@ -767,7 +766,7 @@ async function captureCurrency(d) {
             if (cold_wallet) {
                 if (symbol == 'TRX') {
                     try {
-                        const ds = await fetch(`https://api.trongrid.io/v1/accounts/${address}`);//TBGXMT56vCd7H1jqYUW5RtJYbmqfJ3zM8p`);//${wallet.wallet_address}`);//);
+                        const ds = await fetch(`https://api.shasta.trongrid.io/v1/accounts/${address}`);//TBGXMT56vCd7H1jqYUW5RtJYbmqfJ3zM8p`);//${wallet.wallet_address}`);//);
                         const dt = await ds.json();
                         let trc10 = [];
                         let trc20 = [];
