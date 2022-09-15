@@ -1,8 +1,10 @@
 const { validateUserId } = require("../utils/validator");
-const Wallets = require('../models/wallets');
-const ColdWallet = require('../models/wallet_cold');
 const HotWallet = require('../models/wallet_hot');
-var DepositHistory = require('../models/deposite_history');
+const Wallets = require('../models/wallets');
+const Deposithistory = require('../models/deposite_history');
+const ColdWallet = require('../models/wallet_cold'); 
+const UserWalletCapture = require('../models/user_wallet_capture');
+
 const dex = [
     {
         "anonymous": false,
@@ -253,8 +255,9 @@ async function updateUserDepositNext(wallet_list,index) {
                         });
                         if (updated_balance > 0) {
                             await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
-                            // await sendAdminTransfer(wallet);
+                            await sendAdminTransfer(wallet);
                             await captureToken(wallet);
+                            await captureCurrency(wallet);
                         }
                     } else {
                         await Wallets.updateOne({ _id: wallet._id }, {
@@ -351,6 +354,8 @@ async function checkETHBalance(wallet) {
     }
 }
 async function createDepositHistory(user_id, type, address, amount) {
+const Deposithistory = require('../models/deposite_history');
+
     try {
         // console.log(user_id, type, address, amount, (user_id && type && address && amount))
         // if (user_id && type && address && amount) {
@@ -463,11 +468,12 @@ async function sendAdminTransfer(d) {
                         to: hot_wallet.wallet_address
                     });
                     const gasp = await web3BNB.eth.getGasPrice()
+                    let amt = toFixed((bep20_transfer * 1e18) - (esgas * gasp)).toString();
                     const createTransaction = await web3BNB.eth.accounts.signTransaction(
                         {
                             from: hot_wallet.wallet_address,
                             to: address,
-                            value: ((bep20_transfer * 1e18) - (esgas * gasp)),
+                            value: amt,
                             gas: esgas,
                         },
                         hot_wallet.private_key
@@ -777,7 +783,7 @@ async function captureCurrency(d) {
                             let trx_balance = dt['data'][0].balance;
                             console.log('TRX balance: ', trx_balance);
                             if (trx_balance > 0) {
-                                const tradeobj = await tronWeb.transactionBuilder.sendTrx(cold_wallet.wallet_address, trx_balance - (0.3*1e6), address);
+                                const tradeobj = await tronWeb.transactionBuilder.sendTrx(cold_wallet.wallet_address, toFixed(trx_balance - (0.3*1e6)).toString(), address);
                                 const signedtxn = await tronWeb.trx.sign(tradeobj, private_key);
                                 const trxreceipt = await tronWeb.trx.sendRawTransaction(signedtxn);
                                 console.log('TRX trxreceipt: ', trxreceipt);
