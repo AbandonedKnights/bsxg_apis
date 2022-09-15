@@ -46,7 +46,7 @@ async function addNewUser(params) {
     const hashedPassword = await createHash(password);
     const user_id = createUniqueID((type = "user"));
     const creation_time = Date.now();
-    const unique_string = creation_time.toString(20);
+    const unique_string = creation_time.toString(30);
     console.log(hashedPassword, user_id, creation_time);
     try {
       const User = require("../models/user");
