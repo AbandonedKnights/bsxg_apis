@@ -100,7 +100,7 @@ async function registerNewUser(req, res) {
               const iscreated = await createUserWallets(newUser.user_id);
               if (iscreated) {
                 console.log("Wallets Created!");
-                await generateReferalCode(newUser.user_id);
+                // await generateReferalCode(newUser.user_id);
                 // await distributeReferal(user_id);
               } else console.log("Wallets couldn't");
             }

@@ -118,6 +118,7 @@ async function generateReferalCode(user_id) {
             if (user_data) {
                 const unique_string = Date.now().toString(16);
                 let referalcode = 'BSXG_'+unique_string;
+                console.log("referalcode", referalcode);
                 await Users.updateOne({ user_id: user_id}, {
                     $set: {
                         self_ref_code: referalcode
