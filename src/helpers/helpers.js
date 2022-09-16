@@ -11,13 +11,13 @@ async function getPromoter(sponsorID) {
     try {
         const UserModel = require("../models/user");
         console.log(sponsorID);
-        const member = await UserModel.findOne({self_ref_code: sponsorID, directs: {$lt: 5}});
+        const member = await UserModel.findOne({user_id: sponsorID, directs: {$lt: 5}});
         if(member) {
             console.log("member :: ", member);
-            return member.self_ref_code;
+            return member.user_id;
         } else {
             const member = await UserModel.findOne({promoter_id: sponsorID, directs: {$lt: 5}});
-            return member.self_ref_code;
+            return member.user_id;
             console.log("member :: ", member);
 
         }

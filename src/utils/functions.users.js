@@ -46,6 +46,7 @@ async function addNewUser(params) {
     const hashedPassword = await createHash(password);
     const user_id = createUniqueID((type = "user"));
     const creation_time = Date.now();
+    const unique_string = creation_time.toString(30);
     console.log(hashedPassword, user_id, creation_time);
     try {
       const User = require("../models/user");
@@ -56,7 +57,7 @@ async function addNewUser(params) {
         mobile_number: mobile_number ? mobile_number : "",
         hashedPassword: hashedPassword,
         created_on: creation_time,
-        self_ref_code: "",
+        self_ref_code: unique_string,
         parent_ref_code: parent_ref_code ? parent_ref_code : '',
         promoter_id: promoterID,
         is_email_verified: email ? true : false,
@@ -64,7 +65,7 @@ async function addNewUser(params) {
       };
       console.log(data)
       const newUser = await User.create(data);
-      await User.updateOne({self_ref_code: promoterID},{$inc: {"directs": 1}})
+      await User.updateOne({user_id: promoterID},{$inc: {"directs": 1}})
       if (newUser) {
         return newUser;
       } else {

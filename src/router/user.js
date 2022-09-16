@@ -12,7 +12,8 @@ const {
   updateUserInfo,
   getAllReferalNotKYC,
   getReferals,
-  getUsersActivity
+  getUsersActivity,
+  getUserReferalInfo
 } = require("../controller/user");
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.get("/getactivekyc", getActiveKYC);
 
 router.get("/user/edit/UserEdit", kycUser);
 router.post("/user/get-profile-info", getUserProfile);
+router.post("/getRefferalInfo", getUserReferalInfo);
 router.post("/user/get-referal-info", getReferalInfo);
 router.get("/user/get-referal-info", getReferalInfo);
 router.post("/user/get-referals", getReferals);

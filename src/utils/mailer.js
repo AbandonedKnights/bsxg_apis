@@ -19,7 +19,7 @@ function sendMail(data) {
     try {
         const { to, subject } = data;
         let info = {
-            from:"no_reply@inrx.exchange",
+            from:"no_reply@ctpay.cloud",
             to: to,
             // cc: data.cc ? data.cc : '',
             // bcc: data.bcc ? data.bcc : '',

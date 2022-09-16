@@ -13,7 +13,7 @@ function createUniqueID(type = 'user') {
     let id = '';
     switch (type) {
         case 'user':
-            id = "BSXG"+unique_string+ '/u';
+            id = "BSXG"+unique_string;
             break;
         case 'sell_order':
             id = 'order$' + unique_string + '/s';
@@ -31,7 +31,7 @@ function createUniqueID(type = 'user') {
             id = 'history$' + unique_string;
             break;
         default:
-            id = "BSXG"+unique_string+ '/u';
+            id = "BSXG"+unique_string;
             break;
     }
     return id;
@@ -116,8 +116,9 @@ async function generateReferalCode(user_id) {
         try {
             const user_data = await Users.findOne({ user_id: user_id });
             if (user_data) {
-                const splited_email = user_data.email.split('@');
-                let referalcode = 'BSXG_'+splited_email[0];
+                const unique_string = Date.now().toString(16);
+                let referalcode = 'BSXG_'+unique_string;
+                console.log("referalcode", referalcode);
                 await Users.updateOne({ user_id: user_id}, {
                     $set: {
                         self_ref_code: referalcode

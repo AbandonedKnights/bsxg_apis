@@ -31,12 +31,8 @@ async function registerNewUser(req, res) {
       employee,
       mobile_number,
       admin_permission,
+      parent_ref_code
     } = req.body;
-    const parent_ref_code = req.body
-      ? req.body.parent_ref_code
-        ? req.body.parent_ref_code
-        : ""
-      : "";
     //console.log(password !== confirm_password);
     if (password !== confirm_password) {
       return res.status(400).json({
@@ -61,8 +57,7 @@ async function registerNewUser(req, res) {
     if (userStatusCodes[userStatus]) {
       return res.status(400).json({ message: userStatusCodes[userStatus] });
     } */
-
-    if (parent_ref_code.length > 0) {
+    if (parent_ref_code) {
       const promoterID = await getPromoter(parent_ref_code);
       if (promoterID) {
         console.log("Promoter ID :: ", promoterID);
@@ -100,7 +95,7 @@ async function registerNewUser(req, res) {
               const iscreated = await createUserWallets(newUser.user_id);
               if (iscreated) {
                 console.log("Wallets Created!");
-                await generateReferalCode(newUser.user_id);
+                // await generateReferalCode(newUser.user_id);
                 // await distributeReferal(user_id);
               } else console.log("Wallets couldn't");
             }
@@ -603,13 +598,16 @@ async function resendOtp(req, res) {
 async function loginUser(req, res) {
   const User = require("../models/user");
   try {
-    const { email, mobile, password, otp } = req.body;
+    const { email, mobile, user_id, password, otp } = req.body;
     const params = [];
     if (email) {
       params.push({ email: email });
     }
     if (mobile) {
       params.push({ mobile_number: mobile });
+    }
+    if (user_id) {
+      params.push({ user_id: user_id });
     }
     if (password) {
       //const user_data = await User.findOne({ email: email });
