@@ -57,7 +57,6 @@ async function registerNewUser(req, res) {
     if (userStatusCodes[userStatus]) {
       return res.status(400).json({ message: userStatusCodes[userStatus] });
     } */
-    console.log("parent_ref_code", parent_ref_code);
     if (parent_ref_code) {
       const promoterID = await getPromoter(parent_ref_code);
       if (promoterID) {
@@ -599,13 +598,16 @@ async function resendOtp(req, res) {
 async function loginUser(req, res) {
   const User = require("../models/user");
   try {
-    const { email, mobile, password, otp } = req.body;
+    const { email, mobile, user_id, password, otp } = req.body;
     const params = [];
     if (email) {
       params.push({ email: email });
     }
     if (mobile) {
       params.push({ mobile_number: mobile });
+    }
+    if (user_id) {
+      params.push({ user_id: user_id });
     }
     if (password) {
       //const user_data = await User.findOne({ email: email });
