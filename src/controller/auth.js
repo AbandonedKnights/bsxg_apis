@@ -31,12 +31,8 @@ async function registerNewUser(req, res) {
       employee,
       mobile_number,
       admin_permission,
+      parent_ref_code
     } = req.body;
-    const parent_ref_code = req.body
-      ? req.body.parent_ref_code
-        ? req.body.parent_ref_code
-        : ""
-      : "";
     //console.log(password !== confirm_password);
     if (password !== confirm_password) {
       return res.status(400).json({
@@ -61,8 +57,8 @@ async function registerNewUser(req, res) {
     if (userStatusCodes[userStatus]) {
       return res.status(400).json({ message: userStatusCodes[userStatus] });
     } */
-
-    if (parent_ref_code.length > 0) {
+    console.log("parent_ref_code", parent_ref_code);
+    if (parent_ref_code) {
       const promoterID = await getPromoter(parent_ref_code);
       if (promoterID) {
         console.log("Promoter ID :: ", promoterID);

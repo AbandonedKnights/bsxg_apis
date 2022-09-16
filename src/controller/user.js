@@ -197,6 +197,43 @@ async function getUserProfile(req, res) {
     }
 }
 
+async function getUserReferalInfo(req, res) {
+    try {
+        const { reffer } = req.body;
+        if (reffer) {
+            let profile_data = {};
+            const user_data = await Users.findOne({ self_ref_code: reffer });
+            if (user_data) {
+                profile_data.user = user_data.user_id;
+                profile_data.name = user_data.name;
+                return res.json({
+                    status: 200,
+                    error: false,
+                    profile_data,
+                    message: "Success"
+                })
+            } else {
+                return res.json({
+                    status: 400,
+                    error: true,
+                    message: "Invalid request 2"
+                })
+            }
+        } else {
+            return res.json({
+                status: 400,
+                error: true,
+                message: "Invalid Request 3"
+            })
+        }
+    } catch (error) {
+        return res.json({
+            status: 400,
+            error: true,
+            message: "Something went wrong, please try again"
+        })
+    }
+}
 async function getReferals(req, res) {
     const User = require("../models/user");
     const KYC = require('../models/pending_kyc');
@@ -601,5 +638,6 @@ module.exports = {
     updateUserInfo,
     getReferals,
     getAllReferalNotKYC,
-    getUsersActivity
+    getUsersActivity,
+    getUserReferalInfo
 }

@@ -65,7 +65,7 @@ async function addNewUser(params) {
       };
       console.log(data)
       const newUser = await User.create(data);
-      await User.updateOne({self_ref_code: promoterID},{$inc: {"directs": 1}})
+      await User.updateOne({user_id: promoterID},{$inc: {"directs": 1}})
       if (newUser) {
         return newUser;
       } else {
