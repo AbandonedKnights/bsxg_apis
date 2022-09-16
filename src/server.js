@@ -178,6 +178,8 @@ const { createSocketClient } = require("./utils/functions.socket");
 const { storeOHLCCustom } = require("./utils/functions.chart");
 const { getCMCOHVA, getHighest, getLowest } = require("./utils/functions");
 const { getPromoter } = require("./helpers/helpers");
+const { sendROI } = require("./router/mlm");
+const { initApp } = require("./router/mlmapp");
 const mainnet =
   "wss://mainnet.infura.io/ws/v3/d5bcba9decc042879125ca752dc4637b";
 const ropsten_provider_url =
@@ -868,5 +870,5 @@ function addApisInDoc(req, res) {
     res.status(400).json({ message: "Somthing went wrong" });
   }
 }
-
 //getPromoter("BSXG10001")
+//initApp();
