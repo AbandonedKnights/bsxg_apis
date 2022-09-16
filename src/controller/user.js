@@ -199,7 +199,7 @@ async function getUserProfile(req, res) {
 
 async function getUserReferalInfo(req, res) {
     try {
-        const { reffer } = req.body;
+        const { reffer, user_id } = req.body;
         if (reffer) {
             let profile_data = {};
             const user_data = await Users.findOne({ self_ref_code: reffer });
@@ -210,6 +210,23 @@ async function getUserReferalInfo(req, res) {
                     status: 200,
                     error: false,
                     profile_data,
+                    message: "Success"
+                })
+            } else {
+                return res.json({
+                    status: 400,
+                    error: true,
+                    message: "Invalid request 2"
+                })
+            }
+        } else if(user_id) {
+            const user_data = await Users.findOne({ user_id: user_id });
+            if (user_data) {
+                self_ref_code = user_data.self_ref_code;
+                return res.json({
+                    status: 200,
+                    error: false,
+                    self_ref_code,
                     message: "Success"
                 })
             } else {
