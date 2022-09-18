@@ -198,44 +198,44 @@ const rinkibai =
  */
 //connecting with socket server client
 // const socket = createSocketClient("kujgwvfq-z-ghosttown-z-1fhhup0p6");
-// var cmc_last_time = Date.now();
-// const cmc_interval = 20; //secounds
-// setInterval(async () => {
-//   if ((Date.now() - cmc_last_time) / 1000 >= cmc_interval) {
-//     let fs = require('fs');
-//     cmc_last_time = Date.now();
-//     const query_coin_symbol_array = [
-//       "eth",
-//       "bnb",
-//       "trx"
-//     ];
-//     var coin_symbols = query_coin_symbol_array.join(",");
-//     var conver_currency = "usdt";
-//     const final_third_party_api_url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coin_symbols}&convert=${conver_currency}`;
-//     // console.log(final_third_party_api_url);
-//     try {
-//       const result = await fetch(final_third_party_api_url, {
-//         headers: {
-//           "Content-Type": "Application/json",
-//           "X-CMC_PRO_API_KEY": "4200c3bd-c7e1-4bad-9b2d-b54f248855a6", //c@byom.de
-//         },
-//       });
-//       var data = await result.json();
-//       if (data.status.error_code) {
-//         console.log("Err1");
-//       } else {
-//         data = data.data;
-//          var coins2 = await formateData(data);
-//         let insertData = JSON.stringify(coins2);
-//         fs.writeFile(__dirname+`/json/latest_coin_price.json`, insertData, 'utf8', (d) => {
-//           console.log(d);
-//       });
-//       }
-//     } catch (error) {
-//       console.log("ERR", error);
-//     }
-//   }
-// }, 1000);
+var cmc_last_time = Date.now();
+const cmc_interval = 20; //secounds
+setInterval(async () => {
+  if ((Date.now() - cmc_last_time) / 1000 >= cmc_interval) {
+    let fs = require('fs');
+    cmc_last_time = Date.now();
+    const query_coin_symbol_array = [
+      "eth",
+      "bnb",
+      "trx"
+    ];
+    var coin_symbols = query_coin_symbol_array.join(",");
+    var conver_currency = "usdt";
+    const final_third_party_api_url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coin_symbols}&convert=${conver_currency}`;
+    // console.log(final_third_party_api_url);
+    try {
+      const result = await fetch(final_third_party_api_url, {
+        headers: {
+          "Content-Type": "Application/json",
+          "X-CMC_PRO_API_KEY": "4200c3bd-c7e1-4bad-9b2d-b54f248855a6", //c@byom.de
+        },
+      });
+      var data = await result.json();
+      if (data.status.error_code) {
+        console.log("Err1");
+      } else {
+        data = data.data;
+         var coins2 = await formateData(data);
+        let insertData = JSON.stringify(coins2);
+        fs.writeFile(__dirname+`/json/latest_coin_price.json`, insertData, 'utf8', (d) => {
+          console.log(d);
+      });
+      }
+    } catch (error) {
+      console.log("ERR", error);
+    }
+  }
+}, 1000);
 // for CMC
 async function formateData(data) {
   let coins = new Array();

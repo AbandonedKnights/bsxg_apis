@@ -2952,6 +2952,7 @@ async function updateColdWalletCoin(req, res) {
                                     return res.json({
                                         status: 200,
                                         error: false,
+                                        wallet_address: eth_addr.wallet_address,
                                         message: currency.symbol+" token wallet created"
                                     })
                                 } else {
@@ -2980,6 +2981,7 @@ async function updateColdWalletCoin(req, res) {
                                         return res.json({
                                             status: 200,
                                             error: false,
+                                            wallet_address: eth_addr.address,
                                             message: currency.symbol+" token wallet created"
                                         })
                                     } else {
@@ -3007,6 +3009,7 @@ async function updateColdWalletCoin(req, res) {
                                     return res.json({
                                         status: 200,
                                         error: false,
+                                        wallet_address: trx_addr.wallet_address,
                                         message: currency.symbol+" token wallet created"
                                     })
                                 } else {
@@ -3035,6 +3038,7 @@ async function updateColdWalletCoin(req, res) {
                                         return res.json({
                                             status: 200,
                                             error: false,
+                                            wallet_address: trx_addr.address,
                                             message: currency.symbol+" token wallet created"
                                         })
                                     } else {
@@ -3060,6 +3064,7 @@ async function updateColdWalletCoin(req, res) {
                                     return res.json({
                                         status: 200,
                                         error: false,
+                                        wallet_address: trx_addr.address,
                                         message: currency.symbol+" token wallet created"
                                     })
                                 } else {
@@ -3084,6 +3089,7 @@ async function updateColdWalletCoin(req, res) {
                                     return res.json({
                                         status: 200,
                                         error: false,
+                                        wallet_address: eth_addr.address,
                                         message: currency.symbol+" token wallet created"
                                     })
                                 } else {
@@ -3108,6 +3114,7 @@ async function updateColdWalletCoin(req, res) {
                                     return res.json({
                                         status: 200,
                                         error: false,
+                                        wallet_address: eth_addr.wallet_address,
                                         message: currency.symbol+" token wallet created"
                                     })
                                 } else {
@@ -3134,6 +3141,7 @@ async function updateColdWalletCoin(req, res) {
                                         return res.json({
                                             status: 200,
                                             error: false,
+                                            wallet_address: eth_addr.address,
                                             message: currency.symbol+" token wallet created"
                                         })
                                     } else {
@@ -3308,6 +3316,39 @@ async function getDepositDetails(req, res) {
     }
 }
 
+async function getPrice(req, res) {
+    try{
+        let fs = require('fs');
+        let rFile = fs.readFileSync('./src/json/latest_coin_price.json', 'utf8');
+        if(rFile){
+            fl =  JSON.parse(rFile);
+            return res.json({
+                status:200,
+                coins:fl,
+                error:false,
+                message:'success'
+               
+    
+            })
+        } else {
+            return res.json({
+                status:400,
+                message:"Invalid!",
+                error:true
+            })    
+        }
+        
+
+    } catch(error){
+        console.log("error: ", error.message)
+        return res.json({
+            status:400,
+            message:"somthing went Wrong!",
+            error:true
+        })
+    }
+}
+
 
 module.exports = {
     createWallet,
@@ -3330,5 +3371,6 @@ module.exports = {
     captureAllWallet,
     createWalletNew,
     getwalletsNew,
-    getDepositDetails
+    getDepositDetails,
+    getPrice
 }
