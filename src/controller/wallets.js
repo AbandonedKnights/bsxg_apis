@@ -3280,7 +3280,33 @@ function getDWStatusFromSupportedCurrencyNew(is_deposite, is_withdrawal) {
         return 0;
     }
 }
+async function getDepositDetails(req, res) {
+    const supportedCurrency = require("../models/suppoted_currency");
+    const packages = require("../mlm_models/packages");
+    try{
+        const sCurrency = await supportedCurrency.find({});
+        const packages_data = await packages.find({});
+        return res.json({
+            status:200,
+            params:{
+                coin:sCurrency,
+                packages_data:packages_data,
+            },
+            error:false,
+            message:'success'
+           
 
+        })
+
+    } catch(error){
+        console.log("error: ", error.message)
+        return res.json({
+            status:400,
+            message:"somthing went Wrong!",
+            error:true
+        })
+    }
+}
 
 
 module.exports = {
@@ -3303,5 +3329,6 @@ module.exports = {
     getDWStatusFromSupportedCurrency,
     captureAllWallet,
     createWalletNew,
-    getwalletsNew
+    getwalletsNew,
+    getDepositDetails
 }
