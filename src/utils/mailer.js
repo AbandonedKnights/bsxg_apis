@@ -43,94 +43,94 @@ function sendMail(data) {
 
 
 function sendOTP(to, otp) {
-    const subject = "INRX Account Varification Code";
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const subject = "BSXG Account Varification Code";
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateOtpHTML(otp, to, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, 1);
     sendMail({ to, subject, html});
 }
 
 function sendOTPinrx(to, otp) {
-    const subject = "INRX Account Varification Code";
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const subject = "BSXG Account Varification Code";
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateOtpHTML(otp, to, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, 1);
     sendMail({ to, subject, html});
 }
 
 function sendWithdrawLink(to, transectionId, amount, symbol, toAddress='', remark, temp) {
     const subject = `Confirm Your Withdrawal Request for ${amount} ${symbol}`;
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateWithdrawHTML(transectionId, to, amount, symbol, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, toAddress, remark, temp);
     sendMail({ to, subject, html});
 }
 function sendWithdrawOTP(to, otp, amount, symbol, toAddress='', remark, temp) {
     const subject = `Confirm Your Withdrawal Request for ${amount} ${symbol}`;
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateWithdrawEmailHTML(otp, amount, symbol, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, toAddress, remark, temp);
     sendMail({ to, subject, html});
 }
 function sendDepositStatus(to, amount, remark, temp) {
     const subject = `Deposit Update Request for ${amount} INR`;
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateDepositStatusHTML(to, amount, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, remark, temp);
     sendMail({ to, subject, html});
 }
 function sendWithdrawStatus(to, amount, remark, temp) {
     const subject = `Withdraw Update Request for ${amount} INR`;
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
-    const organisation_addr = '<p>211002 STPI Prayagraj</p><p> Uttar Pradesh, India</p>';
-    const title = 'inrx.exchange';
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
+    const organisation_addr = '';
+    const title = 'bsxg.io';
     const html = generateWithdrawStatusHTML(to, amount, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, remark, temp);
     sendMail({ to, subject, html});
 }
 function sendKYCEmail(to, msg_status,msg) {
-    const subject = "INRX KYC Verification";
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
+    const subject = "BSXG KYC Verification";
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
     const organisation_addr = '';
-    const title = 'inrx.exchange';
+    const title = 'bsxg.io';
     const html = generateKYCHTML(msg, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, msg_status);
     sendMail({ to, subject, html});
 }
 function sendBankVerificationEmail(to, msg_status,msg) {
-    const subject = "INRX Bank Verification";
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
+    const subject = "BSXG Bank Verification";
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
     const organisation_addr = '';
-    const title = 'inrx.exchange';
+    const title = 'bsxg.io';
     const html = generateBankHTML(msg, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, msg_status);
     sendMail({ to, subject, html});
 }
 
 function sendEmailMessage(subject, to,msg, temp) {
-    const logo_url = 'https://inrx.exchange/images/logo.png';
-    const website_url = 'https://inrx.exchange/';
-    const website_name = 'INRX';
+    const logo_url = 'https://bsxg.io/images/logo.png';
+    const website_url = 'https://bsxg.io/';
+    const website_name = 'BSXG';
     const organisation_addr = '';
-    const title = 'inrx.exchange';
+    const title = 'bsxg.io';
     const html = generateMessageHTML(msg, { logo: logo_url, website: website_url, name: website_name, address: organisation_addr, title}, temp);
     sendMail({ to, subject, html});
 }
@@ -217,10 +217,10 @@ function generateDepositStatusHTML(info, template_no = 1) {
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
                         <p style="font-size:0.9em;">Regards,<br />${info&&info.name?info.name:''}</p>
                         <hr style="border:none;border-top:1px solid #eee" />
@@ -275,10 +275,10 @@ function generateWithdrawStatusHTML(info, template_no = 1) {
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
                         <p style="font-size:0.9em;">Regards,<br />${info&&info.name?info.name:''}</p>
                         <hr style="border:none;border-top:1px solid #eee" />
@@ -304,7 +304,7 @@ function generateKYCHTML(msg, info, template_no = 1) {
                         <p style="font-size:1.1em">Hi,</p>
                         <p>You KYC is Approved.</p>
                         <p>Thank you</p>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                             <p>${info&&info.title?info.title:''}</p>
@@ -321,7 +321,7 @@ function generateKYCHTML(msg, info, template_no = 1) {
                 </div>
                 <p style="font-size:1.1em">Hi,</p>
                 <p>Your KYC is Not Approved and Admin is write this message. ${msg}</p>
-                <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                 <hr style="border:none;border-top:1px solid #eee" />
                 <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                     <p>${info&&info.title?info.title:''}</p>
@@ -334,15 +334,15 @@ function generateKYCHTML(msg, info, template_no = 1) {
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                            <p>INRX Inc</p>
+                            <p>BSXG Inc</p>
                             <p>211002 STPI Prayagraj</p>
                             <p>Uttar Pradesh, India</p>
                         </div>
@@ -364,7 +364,7 @@ function generateBankHTML(msg, info, template_no = 1) {
                         <p style="font-size:1.1em">Hi,</p>
                         <p>Your Bank Verification is Approved.</p>
                         <p>Thank you</p>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                             <p>${info&&info.title?info.title:''}</p>
@@ -381,7 +381,7 @@ function generateBankHTML(msg, info, template_no = 1) {
                 </div>
                 <p style="font-size:1.1em">Hi,</p>
                 <p>Your Bank Verification is Not Approved and Admin is write this message. ${msg}</p>
-                <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                 <hr style="border:none;border-top:1px solid #eee" />
                 <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                     <p>${info&&info.title?info.title:''}</p>
@@ -394,15 +394,15 @@ function generateBankHTML(msg, info, template_no = 1) {
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                            <p>INRX Inc</p>
+                            <p>BSXG Inc</p>
                             <p>211002 STPI Prayagraj</p>
                             <p>Uttar Pradesh, India</p>
                         </div>
@@ -422,9 +422,9 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
                             <a href="${info&&info.website?info.website:'#'}" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600"><img src="${info&&info.logo?info.logo:''}" style="max-height: 30px;" /></a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                             <p>${info&&info.title?info.title:''}</p>
@@ -476,7 +476,7 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
                                         <tbody style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
                                         <tr style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
                                             <td align="center" style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;padding-top: 64px;">
-                                            <img src="https://inrx.exchange/images/logo.png" style="filter: invert(1); padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;width:100%;display:block;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;width: 161px;">
+                                            <img src="https://bsxg.io/images/logo.png" style="filter: invert(1); padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;width:100%;display:block;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;width: 161px;">
                                             <h2 style="margin:0;padding:0;padding-bottom:20px;line-height:1.6;font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;text-align: center; padding-top: 32px; padding-bottom: 3px;">One-Time Password (OTP)</h2>
                                             <table style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;margin-bottom: 48px;">
                                                 <tbody style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
@@ -494,7 +494,7 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
                                                         line-height: 17px;">$</p>
                                                     </td>
                                                     <td style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;vertical-align: middle;">
-                                                    <p style="margin:0;padding:0;padding-bottom:20px;line-height:1.6;font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;padding: 0;">&nbsp;&nbsp;INRX</p>
+                                                    <p style="margin:0;padding:0;padding-bottom:20px;line-height:1.6;font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;padding: 0;">&nbsp;&nbsp;BSXG</p>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -535,7 +535,7 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
                                             <td align="center" style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
                                             <p style="margin:0;padding:0;padding-bottom:20px;line-height:1.6;font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;font-size: 14px; padding-top: 32px;">This message was sent to <a href="#" style="font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">${to}</a>.</p>
                                             <p style="margin:0;padding:0;padding-bottom:20px;line-height:1.6;font-family:'Rubik';color:#2d4f43;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;font-size: 14px; padding-bottom: 32px;">
-                                                For any concerns, please visit our <a href="https://inrx.exchange/">website</a>.
+                                                For any concerns, please visit our <a href="https://bsxg.io/">website</a>.
                                             </p>
                                             </td>
                                         </tr>
@@ -549,8 +549,8 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
                                         <tbody style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
                                         <tr style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
                                             <td width="40%" style="padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
-                                                <a href="https://inrx.exchange/" target="_blank">
-                                                    <img src="https://inrx.exchange/images/logo.png" style="filter: invert(1);padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;width:100%;display:block;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;width: 122px; margin:auto;"/>
+                                                <a href="https://bsxg.io/" target="_blank">
+                                                    <img src="https://bsxg.io/images/logo.png" style="filter: invert(1);padding:0;margin:0;border:none;border-spacing:0px;border-collapse:collapse;vertical-align:top;width:100%;display:block;font-family:'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;width: 122px; margin:auto;"/>
                                                 </a>
                                             </td>
                                         </tr>
@@ -583,15 +583,15 @@ function generateOtpHTML(otp, to, info, template_no = 1) {
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                            <p>INRX Inc</p>
+                            <p>BSXG Inc</p>
                             <p>211002 STPI Prayagraj</p>
                             <p>Uttar Pradesh, India</p>
                         </div>
@@ -617,7 +617,7 @@ function generateWithdrawHTML(transectionId, to, amount, symbol, info, toAddress
                         <p>Remark:${remark}</p>
                         <a href="${url+"success-withdrawal/?transection_id="+transectionId}" class="btn" style="background-color:blue;color: #fff;height: 40px;
     width: 250px; text-decoration: none; border:1px solid #000;">APPROVE THIS WITHDRAWAL </a>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                             <p>${info&&info.title?info.title:''}</p>
@@ -636,7 +636,7 @@ function generateWithdrawHTML(transectionId, to, amount, symbol, info, toAddress
                             <p>Remark:${remark}</p>
                             <a href="${inrurl+"/?transection_id="+transectionId}" class="btn" style="background-color:blue;color: #fff;height: 40px;
         width: 250px; text-decoration: none; border:1px solid #000;">APPROVE THIS WITHDRAWAL </a>
-                            <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                            <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                             <hr style="border:none;border-top:1px solid #eee" />
                             <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                                 <p>${info&&info.title?info.title:''}</p>
@@ -649,15 +649,15 @@ function generateWithdrawHTML(transectionId, to, amount, symbol, info, toAddress
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                            <p>INRX Inc</p>
+                            <p>BSXG Inc</p>
                             <p>211002 STPI Prayagraj</p>
                             <p>Uttar Pradesh, India</p>
                         </div>
@@ -711,15 +711,15 @@ function generateWithdrawEmailHTML(otp, amount, symbol, info, toAddress, remark,
             html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">INRX</a>
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">BSXG</a>
                         </div>
                         <p style="font-size:1.1em">Hi,</p>
-                        <p>Thank you for choosing INRX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                        <p>Thank you for choosing BSXG. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
                         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                        <p style="font-size:0.9em;">Regards,<br />INRX</p>
+                        <p style="font-size:0.9em;">Regards,<br />BSXG</p>
                         <hr style="border:none;border-top:1px solid #eee" />
                         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                            <p>INRX Inc</p>
+                            <p>BSXG Inc</p>
                             <p>211002 STPI Prayagraj</p>
                             <p>Uttar Pradesh, India</p>
                         </div>
