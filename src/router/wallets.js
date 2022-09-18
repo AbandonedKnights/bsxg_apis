@@ -16,7 +16,8 @@ const { createWallet,
     updateColdWalletCoin,
     getActualBal,
     getwalletsNew,
-    createWalletNew
+    createWalletNew,
+    getDepositDetails
 } = require('../controller/wallets');
 const { updateUserDeposit } = require('../controller/deposit');
 const { validateTokenAuth } = require('../utils/middleware');
@@ -39,6 +40,6 @@ router.post("/addfundtouser", addFundToUser);
 router.post("/transection_history", transectionHistory);
 router.post("/update_coldwallet_coin", updateColdWalletCoin);
 router.post("/get_actual_bal", getActualBal);
-
 router.post("/capture_all_wallet", captureAllWallet);
+router.post("/get-deposit-details", getDepositDetails);
 module.exports = router;
