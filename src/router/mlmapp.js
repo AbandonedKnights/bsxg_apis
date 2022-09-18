@@ -12,12 +12,12 @@ const packages = [
     { name: "Crown Director", amount: 15000, profit: 5, duration: 600, total_trades: 300, restake: 50 },
 ]
 
-async function provideSpIncome(spID, amount) {
+async function provideSpIncome(userID, spID, amount) {
     try {
         const UserModel = require("../models/user");
         const IncomeModel = require("../mlm_models/income_history");
         await UserModel.updateOne({user_id:spID},{$inc: {income_wallet: amount, shiba_balance: 10000}})
-        await IncomeModel.insertMany({user_id: spID, income_from: null, amount: amount, income_type: "referral"});
+        await IncomeModel.insertMany({user_id: spID, income_from: userID, amount: amount, income_type: "referral"});
     } catch(error) {
         console.log(error.message);
     }
