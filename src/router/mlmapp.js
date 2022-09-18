@@ -12,6 +12,17 @@ const packages = [
     { name: "Crown Director", amount: 15000, profit: 5, duration: 600, total_trades: 300, restake: 50 },
 ]
 
+async function provideSpIncome(spID, amount) {
+    try {
+        const UserModel = require("../models/user");
+        const IncomeModel = require("../mlm_models/income_history");
+        await UserModel.updateOne({user_id:spID},{$inc: {income_wallet: amount}})
+        await IncomeModel.insertMany({});
+    } catch(error) {
+
+    }
+}
+
 async function initApp() {
     try {
         const PackageModel = require("../mlm_models/packages");
