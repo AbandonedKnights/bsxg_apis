@@ -199,7 +199,7 @@ const rinkibai =
 //connecting with socket server client
 // const socket = createSocketClient("kujgwvfq-z-ghosttown-z-1fhhup0p6");
 var cmc_last_time = Date.now();
-const cmc_interval = 20; //secounds
+const cmc_interval = 5*60; //secounds
 setInterval(async () => {
   if ((Date.now() - cmc_last_time) / 1000 >= cmc_interval) {
     let fs = require('fs');
@@ -235,7 +235,7 @@ setInterval(async () => {
       console.log("ERR", error);
     }
   }
-}, 1000);
+}, 5*1000);
 // for CMC
 async function formateData(data) {
   let coins = new Array();
