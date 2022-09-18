@@ -16,10 +16,10 @@ async function provideSpIncome(spID, amount) {
     try {
         const UserModel = require("../models/user");
         const IncomeModel = require("../mlm_models/income_history");
-        await UserModel.updateOne({user_id:spID},{$inc: {income_wallet: amount}})
-        await IncomeModel.insertMany({});
+        await UserModel.updateOne({user_id:spID},{$inc: {income_wallet: amount, shiba_balance: 10000}})
+        await IncomeModel.insertMany({user_id: spID, income_from: null, amount: amount, income_type: "referral"});
     } catch(error) {
-
+        console.log(error.message);
     }
 }
 
