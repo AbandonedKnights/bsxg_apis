@@ -12,13 +12,70 @@ const packages = [
     { name: "Crown Director", amount: 15000, profit: 5, duration: 600, total_trades: 300, restake: 50 },
 ]
 
+async function activateBooster(userID) {
+    try {
+        const UserModel = require("../models/user");
+        const moment = require("moment");
+        const user = await UserModel.findOne({ user_id: userID });
+        const isBetween25D = moment().isBetween(moment(new Date(user.createdAt)), moment(new Date(user.createdAt)).add(25, 'd'));
+        console.log(user.directs >= 5 && isBetween25D);
+        if(user.directs >= 5 && isBetween25D) {
+            await user.updateOne({user_id: userID},{$set: {is_booster_active: true}});
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function findparent(user_id) {
+    const User = require("../models/user");
+    try {
+        const data = await User.aggregate([
+            { $match: { user_id: user_id } },
+            {
+                $graphLookup: {
+                    from: "user",
+                    startWith: "$user_id",
+                    connectFromField: "promoter_id",//promoter_id//parent_ref_code
+                    connectToField: "user_id",
+                    depthField: "level",
+                    as: "referal",
+                },
+            },
+            {
+                $project: {
+                    member_id: 1,
+                    promoter_id: 1,
+                    parent_ref_code: 1,
+                    // level: 1,
+                    "referal.user_id": 1,
+                    "referal.level": 1,
+                },
+            },
+        ]);
+
+        if (data && data.length > 0) {
+            // console.log(data)
+            return data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        //getDirectAndtotalmember
+        console.log(
+            "Error from functions >> function >> findparent: ",
+            error.message
+        );
+    }
+}
+
 async function provideSpIncome(userID, spID, amount) {
     try {
         const UserModel = require("../models/user");
         const IncomeModel = require("../mlm_models/income_history");
-        await UserModel.updateOne({user_id:spID},{$inc: {income_wallet: amount, shiba_balance: 10000}})
-        await IncomeModel.insertMany({user_id: spID, income_from: userID, amount: amount, income_type: "referral"});
-    } catch(error) {
+        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amount, shiba_balance: 10000 } })
+        await IncomeModel.insertMany({ user_id: spID, income_from: userID, amount: amount, income_type: "referral" });
+    } catch (error) {
         console.log(error.message);
     }
 }
@@ -32,4 +89,4 @@ async function initApp() {
         console.log("init_app :: ", error.message)
     }
 }
-module.exports = { initApp };
+module.exports = { initApp, findparent, activateBooster };
