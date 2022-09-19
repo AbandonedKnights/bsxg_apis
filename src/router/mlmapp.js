@@ -35,9 +35,9 @@ async function findparent(user_id) {
             {
                 $graphLookup: {
                     from: "user",
-                    startWith: "$user_id",
+                    startWith: "$self_ref_code",
                     connectFromField: "promoter_id",//promoter_id//parent_ref_code
-                    connectToField: "user_id",
+                    connectToField: "self_ref_code",
                     depthField: "level",
                     as: "referal",
                 },
@@ -56,7 +56,7 @@ async function findparent(user_id) {
 
         if (data && data.length > 0) {
             // console.log(data)
-            return data;
+            return data[0].referal.filter((p)=>p.level > 0);
         } else {
             return [];
         }

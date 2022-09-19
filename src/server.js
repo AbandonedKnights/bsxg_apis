@@ -179,7 +179,7 @@ const { storeOHLCCustom } = require("./utils/functions.chart");
 const { getCMCOHVA, getHighest, getLowest } = require("./utils/functions");
 const { getPromoter } = require("./helpers/helpers");
 const { sendROI } = require("./router/mlm");
-const { initApp, activateBooster } = require("./router/mlmapp");
+const { initApp, activateBooster, findparent } = require("./router/mlmapp");
 const mainnet =
   "wss://mainnet.infura.io/ws/v3/d5bcba9decc042879125ca752dc4637b";
 const ropsten_provider_url =
@@ -873,3 +873,4 @@ function addApisInDoc(req, res) {
 //getPromoter("BSXG10001")
 //initApp();
 activateBooster("BSXG183293b5b41/u");
+findparent("BSXG1834d5ca8c9").then((r)=>{console.log(r)}).catch((error)=>{console.log(error.message)});
