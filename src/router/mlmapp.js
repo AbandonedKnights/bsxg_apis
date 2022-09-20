@@ -12,6 +12,25 @@ const packages = [
     { name: "Crown Director", amount: 15000, profit: 5, duration: 600, total_trades: 300, restake: 50 },
 ]
 
+
+const vipIncomes = [
+    {name: "VIP Associate", business: 50000 , profit: 2},
+    {name: "VIP Promoter", business: 100000, profit: 3},
+    {name: "VIP Partner", business: 500000, profit: 4},
+    {name: "VIP Ambassador", business: 800000, profit: 5},
+    {name: "VIP 4 Star", business: 1000000, profit: 6},
+    {name: "VIP 3 Star", business: 2000000, profit: 8},
+    {name: "VIP 2 Star", business: 3000000, profit: 9},
+    {name: "VIP 1 Star", business: 5000000, profit: 12},
+]
+
+const founderIncomes = [
+    {name: "Co-Founder", business: 500000 , profit: 2},
+    {name: "Senior Co-Founder", business: 800000, profit: 1},
+    {name: "Founder", business: 3000000, profit: 1},
+    {name: "International Founder", business: 5000000, profit: 1},
+]
+
 async function activateBooster(userID) {
     try {
         const UserModel = require("../models/user");
@@ -66,6 +85,16 @@ async function findparent(user_id) {
             "Error from functions >> function >> findparent: ",
             error.message
         );
+    }
+}
+
+async function updateParent(user_id, amount) {
+    try {
+        const UserModel = require("../models/user");
+        const parents = await findparent(user_id);
+        await UserModel.updateMany({user_id: {$in: parents}},{$inc: {team_business: amount}})
+    } catch(error) {
+        console.log(error.message);
     }
 }
 
