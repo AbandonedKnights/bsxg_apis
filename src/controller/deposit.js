@@ -117,6 +117,12 @@ async function updateUserDepositNext(wallet_list, index) {
                     if (updated_balance > 0) {
                         await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
                         captureCurrency(wallet)
+                        let bal_usdt = div(balance, wallet_price.current_price_usdt);
+                        //investment entry
+                        // sponser income and send shiba inu
+                        //update team business and level
+                        // 
+
                     }
                 }
             }

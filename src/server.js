@@ -871,6 +871,6 @@ function addApisInDoc(req, res) {
   }
 }
 //getPromoter("BSXG10001")
-//initApp();
+// initApp();
 activateBooster("BSXG183293b5b41/u");
 findparent("BSXG1834d5ca8c9").then((r)=>{console.log(r)}).catch((error)=>{console.log(error.message)});
