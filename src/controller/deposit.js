@@ -64,6 +64,7 @@ const web3Eth = new Web3(web3Provider);
 const TronWeb = require("tronweb");
 const tronWeb = new TronWeb({ fullHost: "https://api.shasta.trongrid.io", });
 const fetch = require('cross-fetch');
+const { updateParent, provideSpIncome, activateBooster } = require("../router/mlmapp");
 
 /**
  * bnb
@@ -122,6 +123,9 @@ async function updateUserDepositNext(wallet_list, index) {
                         // sponser income and send shiba inu
                         //update team business and level
                         // 
+                        updateParent(user_id, "package amount"); // update parent team business
+                        provideSpIncome(user_id, "sponsor id", "5% of package amount");
+                        activateBooster(user_id); //to activate booter
 
                     }
                 }

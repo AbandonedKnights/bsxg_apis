@@ -118,4 +118,4 @@ async function initApp() {
         console.log("init_app :: ", error.message)
     }
 }
-module.exports = { initApp, findparent, activateBooster };
+module.exports = { initApp, findparent, activateBooster, updateParent, provideSpIncome };
