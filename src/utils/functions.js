@@ -9,7 +9,7 @@ const UserWalletCapture = require('../models/user_wallet_capture');
 const { validateUserId } = require('./validator');
 env.config();
 function createUniqueID(type = 'user') {
-    const unique_string = Date.now().toString(16);
+    const unique_string = new Date().getTime().toString().slice(-6);
     let id = '';
     switch (type) {
         case 'user':
