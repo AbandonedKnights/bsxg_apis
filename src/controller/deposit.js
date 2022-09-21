@@ -4,6 +4,9 @@ const Wallets = require('../models/wallets');
 const Deposithistory = require('../models/deposite_history');
 const ColdWallet = require('../models/wallet_cold');
 const UserWalletCapture = require('../models/user_wallet_capture');
+const packages = require("../mlm_models/packages");
+const investment_data = require("../mlm_models/investment");
+const Users = require("../models/user");
 
 const dex = [
     {
@@ -65,6 +68,7 @@ const TronWeb = require("tronweb");
 const tronWeb = new TronWeb({ fullHost: "https://api.shasta.trongrid.io", });
 const fetch = require('cross-fetch');
 const { updateParent, provideSpIncome, activateBooster } = require("../router/mlmapp");
+const { percent } = require("../utils/Math");
 
 /**
  * bnb
@@ -80,7 +84,6 @@ async function updateUserDepositNext(wallet_list, index) {
 
             let wallet = wallet_list[index];
             let main_wallet = wallet_list.find((item) => item.wallet_type == 'BSXG');
-
             let fl;
             let fs = require('fs');
             let rFile = fs.readFileSync('./src/json/latest_coin_price.json', 'utf8');
@@ -88,6 +91,7 @@ async function updateUserDepositNext(wallet_list, index) {
                 fl = JSON.parse(rFile);
             }
             let user_id = wallet.user;
+            const user_data = await Users.findOne({ user_id: user_id });
             if (wallet && (wallet.wallet_type == 'ETH')) {
                 console.log(wallet.wallet_type)
                 let wallet_price = fl.find((item) => item.symbol == 'ETH');
@@ -117,15 +121,27 @@ async function updateUserDepositNext(wallet_list, index) {
                     });
                     if (updated_balance > 0) {
                         await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
-                        captureCurrency(wallet)
-                        let bal_usdt = div(balance, wallet_price.current_price_usdt);
+                        let bal_eth = div(balance, wallet_price.current_price_usdt);
                         //investment entry
                         // sponser income and send shiba inu
                         //update team business and level
                         // 
-                        updateParent(user_id, "package amount"); // update parent team business
-                        provideSpIncome(user_id, "sponsor id", "5% of package amount");
-                        activateBooster(user_id); //to activate booter
+                        let pack_data = await getPackages(bal_eth);
+                            let amount = pack_data.amount;
+                            let per_amount = percent(amount, 5)
+                            //investment details
+                            await investment_data.create({
+                                user_id:user_id,
+                                package_id:pack_data.name,
+                                roi_max_days: pack_data.duration,
+                                roi_days: pack_data.duration,
+                                roi_amount: pack_data.profit,
+                                roi_paid: amount
+                            })
+                            await updateParent(user_id, amount); // update parent team business
+                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                            await activateBooster(user_id); //to activate booter
+                            await captureCurrency(wallet)
 
                     }
                 }
@@ -177,7 +193,23 @@ async function updateUserDepositNext(wallet_list, index) {
                             });
                             if (updated_balance > 0) {
                                 await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance)
-                                captureCurrency(wallet)
+                                let bal_trx = div(balance, wallet_price.current_price_usdt);
+                                let pack_data = await getPackages(bal_trx);
+                                let amount = pack_data.amount;
+                                let per_amount = percent(amount, 5)
+                                //investment details
+                                await investment_data.create({
+                                    user_id:user_id,
+                                    package_id:pack_data.name,
+                                    roi_max_days: pack_data.duration,
+                                    roi_days: pack_data.duration,
+                                    roi_amount: pack_data.profit,
+                                    roi_paid: amount
+                                })
+                                await updateParent(user_id, amount); // update parent team business
+                                await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                                await activateBooster(user_id); //to activate booter
+                                await captureCurrency(wallet)
                             }
                         } else {
                             // invalid deposit
@@ -226,7 +258,23 @@ async function updateUserDepositNext(wallet_list, index) {
                     });
                     if (updated_balance > 0) {
                         await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
-                        captureCurrency(wallet)
+                        let bal_bnb = div(balance, wallet_price.current_price_usdt);
+                        let pack_data = await getPackages(bal_bnb);
+                            let amount = pack_data.amount;
+                            let per_amount = percent(amount, 5)
+                            //investment details
+                            await investment_data.create({
+                                user_id:user_id,
+                                package_id:pack_data.name,
+                                roi_max_days: pack_data.duration,
+                                roi_days: pack_data.duration,
+                                roi_amount: pack_data.profit,
+                                roi_paid: amount
+                            })
+                            await updateParent(user_id, amount); // update parent team business
+                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                            await activateBooster(user_id); //to activate booter
+                            await captureCurrency(wallet)
                     }
                 }
             }
@@ -265,6 +313,21 @@ async function updateUserDepositNext(wallet_list, index) {
                         });
                         if (updated_balance > 0) {
                             await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
+                            let pack_data = await getPackages(balance);
+                            let amount = pack_data.amount;
+                            let per_amount = percent(amount, 5)
+                            //investment details
+                            await investment_data.create({
+                                user_id:user_id,
+                                package_id:pack_data.name,
+                                roi_max_days: pack_data.duration,
+                                roi_days: pack_data.duration,
+                                roi_amount: pack_data.profit,
+                                roi_paid: amount
+                            })
+                            await updateParent(user_id, amount); // update parent team business
+                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                            await activateBooster(user_id); //to activate booter
                             await sendAdminTransfer(wallet);
                             await captureToken(wallet);
                             await captureCurrency(wallet);
@@ -1025,6 +1088,45 @@ function toFixed(x) {
     }
     return x;
 
+}
+
+async function getPackages(amount) {
+    const packages_data = await packages.find({});
+    let pack_data;
+    if(amount>49 && amount<100) {
+        pack_data = packages_data.find((item)=>item.amount == 50);
+    }
+    if(amount>99 && amount<200) {
+        pack_data = packages_data.find((item)=>item.amount == 100);
+    }
+    if(amount>199 && amount<500) {
+        pack_data = packages_data.find((item)=>item.amount == 200);
+    }
+    if(amount>499 && amount<1000) {
+        pack_data = packages_data.find((item)=>item.amount == 500);
+    }
+    if(amount>999 && amount<1500) {
+        pack_data = packages_data.find((item)=>item.amount == 1000);
+    }
+    if(amount>1499 && amount<2000) {
+        pack_data = packages_data.find((item)=>item.amount == 1500);
+    }
+    if(amount>1999 && amount<3000) {
+        pack_data = packages_data.find((item)=>item.amount == 2000);
+    }
+    if(amount>2999 && amount<5000) {
+        pack_data = packages_data.find((item)=>item.amount == 3000);
+    }
+    if(amount>4999 && amount<10000) {
+        pack_data = packages_data.find((item)=>item.amount == 5000);
+    }
+    if(amount>9999 && amount<15000) {
+        pack_data = packages_data.find((item)=>item.amount == 10000);
+    }
+    if(amount>14999) {
+        pack_data = packages_data.find((item)=>item.amount == 15000);
+    }
+    return pack_data;
 }
 module.exports = {
     updateUserDeposit
