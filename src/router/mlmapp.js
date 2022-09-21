@@ -1,6 +1,6 @@
 const packages = [
     { name: "Associate", amount: 50, profit: 2, duration: 1000, total_trades: 200, restake: 50 },
-    { name: "Qualification", amount: 100, profit: 2, duration: 1500, total_trades: 300, restake: 50 },
+    { name: "Qualified Associate", amount: 100, profit: 2, duration: 1500, total_trades: 300, restake: 50 },
     { name: "Business Promoter", amount: 200, profit: 3, duration: 1000, total_trades: 300, restake: 50 },
     { name: "Ambassador", amount: 500, profit: 4, duration: 750, total_trades: 300, restake: 50 },
     { name: "Silver Ambassador", amount: 1000, profit: 4, duration: 750, total_trades: 300, restake: 50 },
