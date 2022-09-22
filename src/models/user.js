@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
     mobile_number: { type: String, default: '' },
     created_on: { type: String, default: Date.now() },
     self_ref_code: { type: String, required: true, unique: true },
-    parent_ref_code: { type: String, required: true, unique: true },
+    parent_ref_code: { type: String, required: true},
     user_role: { type: Number, default: 0 },
     is_email_verified: { type: Number, default: false, required: true },
     is_mobile_verified: { type: Number, default: false, required: true },

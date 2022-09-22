@@ -86,8 +86,10 @@ async function updateUserDepositNext(wallet_list, index) {
             let main_wallet = wallet_list.find((item) => item.wallet_type == 'BSXG');
             let fl;
             let fs = require('fs');
-            let rFile = fs.readFileSync('./src/json/latest_coin_price.json', 'utf8');
-            if (rFile) {
+            let path = require("path");
+            let dirname = path.join(__dirname, `../json/latest_coin_price.json`);
+            let rFile = fs.readFileSync(dirname, 'utf8');
+            if(rFile){
                 fl = JSON.parse(rFile);
             }
             let user_id = wallet.user;

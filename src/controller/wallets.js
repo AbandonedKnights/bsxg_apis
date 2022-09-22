@@ -3319,7 +3319,9 @@ async function getDepositDetails(req, res) {
 async function getPrice(req, res) {
     try{
         let fs = require('fs');
-        let rFile = fs.readFileSync('./src/json/latest_coin_price.json', 'utf8');
+        let path = require("path");
+        let dirname = path.join(__dirname, `../json/latest_coin_price.json`);
+        let rFile = fs.readFileSync(dirname, 'utf8');
         if(rFile){
             fl =  JSON.parse(rFile);
             return res.json({
