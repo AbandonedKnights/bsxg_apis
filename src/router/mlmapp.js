@@ -1,3 +1,5 @@
+const { percent, sub } = require("../utils/Math");
+
 const packages = [
     { name: "Associate", amount: 50, profit: 2, duration: 1000, total_trades: 200, restake: 50 },
     { name: "Qualified Associate", amount: 100, profit: 2, duration: 1500, total_trades: 300, restake: 50 },
@@ -102,8 +104,34 @@ async function provideSpIncome(userID, spID, amount) {
     try {
         const UserModel = require("../models/user");
         const IncomeModel = require("../mlm_models/income_history");
-        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amount, shiba_balance: 10000 } })
-        await IncomeModel.insertMany({ user_id: spID, income_from: userID, amount: amount, income_type: "referral" });
+        const helpingHand = require("../mlm_models/admin");
+        let per_amt = percent(amount, 1);
+        let amt =  sub(amount, per_amt)
+        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt, shiba_balance: 10000 } })
+        await IncomeModel.create({ user_id: spID, income_from: userID, amount: amt, income_type: "referral" });
+        helpingHand.updateOne({}, { $inc: { helping_hand: per_amt, total_shiba:10000 } })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function updateTotalBusiness(amount) {
+    try {
+        const helpingHand = require("../mlm_models/admin");
+        helpingHand.updateOne({}, { $inc: { total_business: amount} })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function provideIncome(userID, spID, amount, income_type) {
+    try {
+        const UserModel = require("../models/user");
+        const IncomeModel = require("../mlm_models/income_history");
+        let per_amt = percent(amount, 1);
+        let amt =  sub(amount, per_amt)
+        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt } })
+        await IncomeModel.create({ user_id: spID, income_from: userID, amount: amt, income_type: income_type });
     } catch (error) {
         console.log(error.message);
     }
@@ -118,4 +146,4 @@ async function initApp() {
         console.log("init_app :: ", error.message)
     }
 }
-module.exports = { initApp, findparent, activateBooster, updateParent, provideSpIncome };
+module.exports = { initApp, findparent, activateBooster, updateParent, provideSpIncome, updateTotalBusiness };

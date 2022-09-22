@@ -15,18 +15,19 @@ async function getPromoter(sponsorID) {
         if(member) {
             console.log("member :: ", member);
             return member.user_id;
-        } else {
-            const member = await UserModel.findOne({promoter_id: sponsorID, directs: {$lt: 5}});
-            return member.user_id;
-            console.log("member :: ", member);
-
         }
-        
+        const member2 = await UserModel.findOne({promoter_id: sponsorID});
+        if(member2.directs<5) {
+            return member2.user_id;
+        } else {
+            return await getPromoter(member2.user_id)
+        }
     } catch (error) {
         console.log(error.message);
         return false;
     }
 }
+
 
 module.exports = {
     getPromoter

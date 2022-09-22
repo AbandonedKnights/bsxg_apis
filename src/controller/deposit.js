@@ -136,7 +136,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 user_id:user_id,
                                 package_id:pack_data.name,
                                 roi_max_days: pack_data.duration,
-                                roi_days: pack_data.duration,
+                                roi_days: 0,
                                 roi_amount: pack_data.profit,
                                 roi_paid: amount
                             })
@@ -319,17 +319,23 @@ async function updateUserDepositNext(wallet_list, index) {
                             let amount = pack_data.amount;
                             let per_amount = percent(amount, 5)
                             //investment details
+                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                            let invest_type = 1;
+                            if(invest_data) {
+                                invest_type=2;
+                            }
                             await investment_data.create({
                                 user_id:user_id,
-                                package_id:pack_data.name,
+                                package_id:pack_data._id,
                                 roi_max_days: pack_data.duration,
-                                roi_days: pack_data.duration,
-                                roi_amount: pack_data.profit,
-                                roi_paid: amount
+                                invest_type:invest_type
                             })
+                            await updateTotalBusiness(amount);
                             await updateParent(user_id, amount); // update parent team business
-                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
-                            await activateBooster(user_id); //to activate booter
+                            if(invest_type == 1) {
+                                await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                            }
+                            await activateBooster(user_data.promoter_id); //to activate booter
                             await sendAdminTransfer(wallet);
                             await captureToken(wallet);
                             await captureCurrency(wallet);
