@@ -132,17 +132,23 @@ async function updateUserDepositNext(wallet_list, index) {
                             let amount = pack_data.amount;
                             let per_amount = percent(amount, 5)
                             //investment details
+                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                            let invest_type = 1;
+                            if(invest_data) {
+                                invest_type=2;
+                            }
                             await investment_data.create({
                                 user_id:user_id,
-                                package_id:pack_data.name,
+                                package_id:pack_data._id,
                                 roi_max_days: pack_data.duration,
-                                roi_days: 0,
-                                roi_amount: pack_data.profit,
-                                roi_paid: amount
+                                invest_type:invest_type
                             })
+                            await updateTotalBusiness(amount);
                             await updateParent(user_id, amount); // update parent team business
-                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
-                            await activateBooster(user_id); //to activate booter
+                            if(invest_type == 1) {
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                            }
+                            await activateBooster(user_data.promoter_id); //to activate booter
                             await captureCurrency(wallet)
 
                     }
@@ -197,20 +203,26 @@ async function updateUserDepositNext(wallet_list, index) {
                                 await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance)
                                 let bal_trx = div(balance, wallet_price.current_price_usdt);
                                 let pack_data = await getPackages(bal_trx);
-                                let amount = pack_data.amount;
-                                let per_amount = percent(amount, 5)
-                                //investment details
-                                await investment_data.create({
-                                    user_id:user_id,
-                                    package_id:pack_data.name,
-                                    roi_max_days: pack_data.duration,
-                                    roi_days: pack_data.duration,
-                                    roi_amount: pack_data.profit,
-                                    roi_paid: amount
-                                })
-                                await updateParent(user_id, amount); // update parent team business
-                                await provideSpIncome(user_id, user_data.promoter_id, per_amount);
-                                await activateBooster(user_id); //to activate booter
+                            let amount = pack_data.amount;
+                            let per_amount = percent(amount, 5)
+                            //investment details
+                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                            let invest_type = 1;
+                            if(invest_data) {
+                                invest_type=2;
+                            }
+                            await investment_data.create({
+                                user_id:user_id,
+                                package_id:pack_data._id,
+                                roi_max_days: pack_data.duration,
+                                invest_type:invest_type
+                            })
+                            await updateTotalBusiness(amount);
+                            await updateParent(user_id, amount); // update parent team business
+                            if(invest_type == 1) {
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                            }
+                            await activateBooster(user_data.promoter_id); //to activate booter
                                 await captureCurrency(wallet)
                             }
                         } else {
@@ -260,22 +272,28 @@ async function updateUserDepositNext(wallet_list, index) {
                     });
                     if (updated_balance > 0) {
                         await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
-                        let bal_bnb = div(balance, wallet_price.current_price_usdt);
-                        let pack_data = await getPackages(bal_bnb);
+                            let bal_bnb = div(balance, wallet_price.current_price_usdt);
+                            let pack_data = await getPackages(bal_bnb);
                             let amount = pack_data.amount;
                             let per_amount = percent(amount, 5)
                             //investment details
+                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                            let invest_type = 1;
+                            if(invest_data) {
+                                invest_type=2;
+                            }
                             await investment_data.create({
                                 user_id:user_id,
-                                package_id:pack_data.name,
+                                package_id:pack_data._id,
                                 roi_max_days: pack_data.duration,
-                                roi_days: pack_data.duration,
-                                roi_amount: pack_data.profit,
-                                roi_paid: amount
+                                invest_type:invest_type
                             })
+                            await updateTotalBusiness(amount);
                             await updateParent(user_id, amount); // update parent team business
-                            await provideSpIncome(user_id, user_data.promoter_id, per_amount);
-                            await activateBooster(user_id); //to activate booter
+                            if(invest_type == 1) {
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                            }
+                            await activateBooster(user_data.promoter_id); //to activate booter
                             await captureCurrency(wallet)
                     }
                 }
@@ -333,7 +351,7 @@ async function updateUserDepositNext(wallet_list, index) {
                             await updateTotalBusiness(amount);
                             await updateParent(user_id, amount); // update parent team business
                             if(invest_type == 1) {
-                                await provideSpIncome(user_id, user_data.promoter_id, per_amount);
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
                             await activateBooster(user_data.promoter_id); //to activate booter
                             await sendAdminTransfer(wallet);

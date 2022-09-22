@@ -105,6 +105,9 @@ async function registerNewUser(req, res) {
         return res.status(200).json({
           params: {
             user_id: newUser.user_id,
+            email:newUser.email,
+            name:newUser.name,
+            reffral_code:newUser.parent_ref_code,
             ev: false,
           },
           message: "Congratulations, registration successful.",
