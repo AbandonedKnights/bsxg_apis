@@ -33,15 +33,18 @@ const founderIncomes = [
     {name: "International Founder", business: 5000000, profit: 1},
 ]
 
-async function activateBooster(userID) {
+async function activateBooster(userID, promoterID) {
     try {
         const UserModel = require("../models/user");
         const moment = require("moment");
-        const user = await UserModel.findOne({ user_id: userID });
+        const user = await UserModel.findOne({ user_id: promoterID });
         const isBetween25D = moment().isBetween(moment(new Date(user.createdAt)), moment(new Date(user.createdAt)).add(25, 'd'));
         console.log(user.directs >= 5 && isBetween25D);
         if(user.directs >= 5 && isBetween25D) {
-            await user.updateOne({user_id: userID},{$set: {is_booster_active: true}});
+            await UserModel.updateOne({_id: user._id},{$set: {is_booster_active: true}});
+        } else {
+             await UserModel.updateOne({_id: user._id},{$inc: {"directs": 1}})
+            await UserModel.updateOne({user_id: userID},{$set: {promoter_id: promoterID}});
         }
     } catch (error) {
         console.log(error.message);

@@ -148,7 +148,7 @@ async function updateUserDepositNext(wallet_list, index) {
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
-                            await activateBooster(user_data.promoter_id); //to activate booter
+                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                             await captureCurrency(wallet)
 
                     }
@@ -222,7 +222,7 @@ async function updateUserDepositNext(wallet_list, index) {
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
-                            await activateBooster(user_data.promoter_id); //to activate booter
+                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                                 await captureCurrency(wallet)
                             }
                         } else {
@@ -293,7 +293,7 @@ async function updateUserDepositNext(wallet_list, index) {
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
-                            await activateBooster(user_data.promoter_id); //to activate booter
+                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                             await captureCurrency(wallet)
                     }
                 }
@@ -353,7 +353,7 @@ async function updateUserDepositNext(wallet_list, index) {
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
-                            await activateBooster(user_data.promoter_id); //to activate booter
+                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                             await sendAdminTransfer(wallet);
                             await captureToken(wallet);
                             await captureCurrency(wallet);
