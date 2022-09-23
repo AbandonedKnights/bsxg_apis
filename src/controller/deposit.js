@@ -67,7 +67,7 @@ const web3Eth = new Web3(web3Provider);
 const TronWeb = require("tronweb");
 const tronWeb = new TronWeb({ fullHost: "https://api.shasta.trongrid.io", });
 const fetch = require('cross-fetch');
-const { updateParent, provideSpIncome, activateBooster, updateTotalBusiness } = require("../router/mlmapp");
+const { updateParent, provideSpIncome, activateBooster, updateTotalBusiness, updateParentNew } = require("../router/mlmapp");
 const { percent } = require("../utils/Math");
 
 /**
@@ -144,7 +144,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 invest_type:invest_type
                             })
                             await updateTotalBusiness(amount);
-                            await updateParent(user_id, amount); // update parent team business
+                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
@@ -218,7 +218,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 invest_type:invest_type
                             })
                             await updateTotalBusiness(amount);
-                            await updateParent(user_id, amount); // update parent team business
+                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
@@ -289,7 +289,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 invest_type:invest_type
                             })
                             await updateTotalBusiness(amount);
-                            await updateParent(user_id, amount); // update parent team business
+                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
@@ -349,7 +349,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 invest_type:invest_type
                             })
                             await updateTotalBusiness(amount);
-                            await updateParent(user_id, amount); // update parent team business
+                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                             if(invest_type == 1) {
                                 await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                             }
