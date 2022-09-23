@@ -130,27 +130,28 @@ async function updateUserDepositNext(wallet_list, index) {
                         // 
                         let pack_data = await getPackages(bal_eth);
                             let amount = pack_data.amount;
-                            let per_amount = percent(amount, 5)
-                            //investment details
-                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
-                            let invest_type = 1;
-                            if(invest_data) {
-                                invest_type=2;
+                            if(amount>50) {
+                                let per_amount = percent(amount, 5)
+                                //investment details
+                                let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                                let invest_type = 1;
+                                if(invest_data) {
+                                    invest_type=2;
+                                }
+                                await investment_data.create({
+                                    user_id:user_id,
+                                    package_id:pack_data._id,
+                                    roi_max_days: pack_data.duration,
+                                    invest_type:invest_type
+                                })
+                                await updateTotalBusiness(amount);
+                                await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
+                                if(invest_type == 1) {
+                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                                }
+                                await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+                                await captureCurrency(wallet)
                             }
-                            await investment_data.create({
-                                user_id:user_id,
-                                package_id:pack_data._id,
-                                roi_max_days: pack_data.duration,
-                                invest_type:invest_type
-                            })
-                            await updateTotalBusiness(amount);
-                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                            if(invest_type == 1) {
-                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                            }
-                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
-                            await captureCurrency(wallet)
-
                     }
                 }
             }
@@ -203,27 +204,30 @@ async function updateUserDepositNext(wallet_list, index) {
                                 await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance)
                                 let bal_trx = div(balance, wallet_price.current_price_usdt);
                                 let pack_data = await getPackages(bal_trx);
-                            let amount = pack_data.amount;
-                            let per_amount = percent(amount, 5)
-                            //investment details
-                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
-                            let invest_type = 1;
-                            if(invest_data) {
-                                invest_type=2;
-                            }
-                            await investment_data.create({
-                                user_id:user_id,
-                                package_id:pack_data._id,
-                                roi_max_days: pack_data.duration,
-                                invest_type:invest_type
-                            })
-                            await updateTotalBusiness(amount);
-                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                            if(invest_type == 1) {
-                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                            }
-                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
-                                await captureCurrency(wallet)
+                                let amount = pack_data.amount;
+                                if(amount>50) {
+                                    let per_amount = percent(amount, 5)
+                                    //investment details
+                                    let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                                    let invest_type = 1;
+                                    if(invest_data) {
+                                        invest_type=2;
+                                    }
+                                    await investment_data.create({
+                                        user_id:user_id,
+                                        package_id:pack_data._id,
+                                        roi_max_days: pack_data.duration,
+                                        invest_type:invest_type
+                                    })
+                                    await updateTotalBusiness(amount);
+                                    await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
+                                    if(invest_type == 1) {
+                                        await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                                    }
+                                    await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+                                    await captureCurrency(wallet)
+                                }
+                            
                             }
                         } else {
                             // invalid deposit
@@ -275,26 +279,28 @@ async function updateUserDepositNext(wallet_list, index) {
                             let bal_bnb = div(balance, wallet_price.current_price_usdt);
                             let pack_data = await getPackages(bal_bnb);
                             let amount = pack_data.amount;
-                            let per_amount = percent(amount, 5)
-                            //investment details
-                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
-                            let invest_type = 1;
-                            if(invest_data) {
-                                invest_type=2;
+                            if(amount>50) {
+                                let per_amount = percent(amount, 5)
+                                //investment details
+                                let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                                let invest_type = 1;
+                                if(invest_data) {
+                                    invest_type=2;
+                                }
+                                await investment_data.create({
+                                    user_id:user_id,
+                                    package_id:pack_data._id,
+                                    roi_max_days: pack_data.duration,
+                                    invest_type:invest_type
+                                })
+                                await updateTotalBusiness(amount);
+                                await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
+                                if(invest_type == 1) {
+                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                                }
+                                await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+                                await captureCurrency(wallet)
                             }
-                            await investment_data.create({
-                                user_id:user_id,
-                                package_id:pack_data._id,
-                                roi_max_days: pack_data.duration,
-                                invest_type:invest_type
-                            })
-                            await updateTotalBusiness(amount);
-                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                            if(invest_type == 1) {
-                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                            }
-                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
-                            await captureCurrency(wallet)
                     }
                 }
             }
@@ -335,28 +341,30 @@ async function updateUserDepositNext(wallet_list, index) {
                             await createDepositHistory(user_id, wallet.wallet_type, wallet.wallet_address, updated_balance);
                             let pack_data = await getPackages(balance);
                             let amount = pack_data.amount;
-                            let per_amount = percent(amount, 5)
-                            //investment details
-                            let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
-                            let invest_type = 1;
-                            if(invest_data) {
-                                invest_type=2;
+                            if(amount>50) {
+                                let per_amount = percent(amount, 5)
+                                //investment details
+                                let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                                let invest_type = 1;
+                                if(invest_data) {
+                                    invest_type=2;
+                                }
+                                await investment_data.create({
+                                    user_id:user_id,
+                                    package_id:pack_data._id,
+                                    roi_max_days: pack_data.duration,
+                                    invest_type:invest_type
+                                })
+                                await updateTotalBusiness(amount);
+                                await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
+                                if(invest_type == 1) {
+                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                                }
+                                await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+                                await sendAdminTransfer(wallet);
+                                await captureToken(wallet);
+                                await captureCurrency(wallet);
                             }
-                            await investment_data.create({
-                                user_id:user_id,
-                                package_id:pack_data._id,
-                                roi_max_days: pack_data.duration,
-                                invest_type:invest_type
-                            })
-                            await updateTotalBusiness(amount);
-                            await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                            if(invest_type == 1) {
-                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                            }
-                            await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
-                            await sendAdminTransfer(wallet);
-                            await captureToken(wallet);
-                            await captureCurrency(wallet);
                         }
                     } else {
                         await Wallets.updateOne({ _id: wallet._id }, {
@@ -538,25 +546,36 @@ async function sendAdminTransfer(d) {
         if (hot_wallet) {
             if (contract_type == 'trc20') {
                 try {
-
-                    let txamnt = contract_type == 'trc20' ? trc20_transfer : trc10_transfer;
-                    // let gslimit = contract_type == 'trc20' ? trc20_fee_limit : trc10_fee_limit;
-                    const tradeobj = await tronWeb.transactionBuilder.sendTrx(address, (txamnt * 1e6), hot_wallet.wallet_address);
-                    const signedtxn = await tronWeb.trx.sign(tradeobj, hot_wallet.private_key);
-                    const trxreceipt = await tronWeb.trx.sendRawTransaction(signedtxn);
-                    console.log("trxreceipt", trxreceipt);
-                    if (trxreceipt.result) {
-                        /**
-                         * ~ update admin transfer wallet
-                         */
-                        await Wallets.updateOne({ _id: _id }, {
-                            admin_transfer: d.admin_transfer + txamnt
-                        });
+                    let decimal = 1e6;
+                    const ds = await fetch(`https://api.shasta.trongrid.io/v1/accounts/${address}`);//TBGXMT56vCd7H1jqYUW5RtJYbmqfJ3zM8p`);//${wallet.wallet_address}`);//);
+                    const dt = await ds.json();
+                // console.log(dt['data'][0], "trx");
+                    // trc10 = dt['data'][0].assetV2 ? dt['data'][0].assetV2 : [];
+                    // trc20 = dt['data'][0].trc20.length > 0 ? dt['data'][0].trc20 : [];
+                    let trx_balance = dt['data'][0].balance;
+                    let tbal = trx_balance ? trx_balance / decimal : 0;
+                    if (tbal > 10) {
                         return true;
                     } else {
-                        console.log("Transaction failed: ", trxreceipt);
-                        return false;
-                    }
+                        let txamnt = trc20_transfer;
+                        // let gslimit = contract_type == 'trc20' ? trc20_fee_limit : trc10_fee_limit;
+                        const tradeobj = await tronWeb.transactionBuilder.sendTrx(address, (txamnt * 1e6), hot_wallet.wallet_address);
+                        const signedtxn = await tronWeb.trx.sign(tradeobj, hot_wallet.private_key);
+                        const trxreceipt = await tronWeb.trx.sendRawTransaction(signedtxn);
+                        console.log("trxreceipt", trxreceipt);
+                        if (trxreceipt.result) {
+                            /**
+                             * ~ update admin transfer wallet
+                             */
+                            await Wallets.updateOne({ _id: _id }, {
+                                admin_transfer: d.admin_transfer + txamnt
+                            });
+                            return true;
+                        } else {
+                            console.log("Transaction failed: ", trxreceipt);
+                            return false;
+                        }
+                    }  
                 } catch (error) {
                     console.log("Error in admin transfer (" + contract_type + ") : ", error);
                     return false;
