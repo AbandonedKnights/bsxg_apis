@@ -3293,7 +3293,7 @@ async function getDepositDetails(req, res) {
     const packages = require("../mlm_models/packages");
     try{
         const sCurrency = await supportedCurrency.find({});
-        const packages_data = await packages.find({});
+        const packages_data = await packages.find({}).sort({amount:1});
         return res.json({
             status:200,
             params:{
