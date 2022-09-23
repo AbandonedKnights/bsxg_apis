@@ -29,11 +29,11 @@ async function getPromoter(sponsorID) {
         const member = await UserModel.findOne({user_id: sponsorID, directs: {$lt: 5}});
         if(member) {
             console.log("member :: ", member);
-            return member.user_id;
+            return member;
         }
         const member2 = await UserModel.findOne({promoter_id: sponsorID});
         if(member2.directs<5) {
-            return member2.user_id;
+            return member2;
         } else {
             return await getPromoter(member2.user_id)
         }

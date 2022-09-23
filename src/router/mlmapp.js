@@ -1,3 +1,4 @@
+const { getPromoter } = require("../helpers/helpers");
 const { percent, sub } = require("../utils/Math");
 
 const packages = [
@@ -33,7 +34,7 @@ const founderIncomes = [
     {name: "International Founder", business: 5000000, profit: 1},
 ]
 
-async function activateBooster(userID, promoterID) {
+async function activateBoosterold(userID, promoterID) {
     try {
         const UserModel = require("../models/user");
         const moment = require("moment");
@@ -50,6 +51,25 @@ async function activateBooster(userID, promoterID) {
         console.log(error.message);
     }
 }
+
+async function activateBooster(userID, promoterID) {
+    try {
+        const UserModel = require("../models/user");
+        const moment = require("moment");
+        const user = await UserModel.findOne({ user_id: promoterID });
+        const isBetween25D = moment().isBetween(moment(new Date(user.createdAt)), moment(new Date(user.createdAt)).add(25, 'd'));
+        console.log(user.directs >= 5 && isBetween25D);
+        if(user.directs >= 5 && isBetween25D) {
+            await UserModel.updateOne({_id: user._id},{$set: {is_booster_active: true}});
+        }
+        let member = await getPromoter(promoterID);
+        await UserModel.updateOne({_id: member._id},{$inc: {"directs": 1}})
+        await UserModel.updateOne({user_id: userID},{$set: {promoter_id: member.promoter_id}});
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 async function findparent(user_id) {
     const User = require("../models/user");
