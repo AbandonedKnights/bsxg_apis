@@ -149,12 +149,15 @@ async function provideIncome(userID, spID, amount, income_type) {
         console.log(error.message);
     }
 }
-
+/// fetch team business
 async function calculateBusiness(userID) {
     try {
         const UserModel = require("../models/user");
+        const user_data = await UserModel.find({}, {team_business:1});
+        return user_data;
     } catch (error) {
         console.log(error.message);
+        return [];
     }
 }
 
