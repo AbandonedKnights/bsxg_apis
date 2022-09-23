@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema(
     secret_key: { type: Object, default: false },
     ask_login_otp: { type: Number, default: 0 },
     directs: { type: Number, default: 0 },
+    income_wallet: { type: Number, default: 0 },
     total_team: { type: Number, default: 0 },
     team_business: { type: Number, default: 0 },
     direct_business: { type: Number, default: 0 },
