@@ -140,6 +140,19 @@ async function provideIncome(userID, spID, amount, income_type) {
     }
 }
 
+async function calculateBusiness(userID, spID, amount, income_type) {
+    try {
+        const UserModel = require("../models/user");
+        const IncomeModel = require("../mlm_models/income_history");
+        let per_amt = percent(amount, 1);
+        let amt =  sub(amount, per_amt)
+        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt } })
+        await IncomeModel.create({ user_id: spID, income_from: userID, amount: amt, income_type: income_type });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 async function initApp() {
     try {
         const PackageModel = require("../mlm_models/packages");

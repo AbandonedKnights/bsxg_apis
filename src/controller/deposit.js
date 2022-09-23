@@ -67,7 +67,7 @@ const web3Eth = new Web3(web3Provider);
 const TronWeb = require("tronweb");
 const tronWeb = new TronWeb({ fullHost: "https://api.shasta.trongrid.io", });
 const fetch = require('cross-fetch');
-const { updateParent, provideSpIncome, activateBooster } = require("../router/mlmapp");
+const { updateParent, provideSpIncome, activateBooster, updateTotalBusiness } = require("../router/mlmapp");
 const { percent } = require("../utils/Math");
 
 /**
