@@ -7,6 +7,21 @@ async function getNextId() {
     return next_id;
 }
 
+async function checkParentCode(sponsorID) {
+    try {
+        const UserModel = require("../models/user");
+        const member = await UserModel.findOne({user_id: sponsorID});
+        if(member) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log(error.message);
+        return false;
+    }
+}
+
 async function getPromoter(sponsorID) {
     try {
         const UserModel = require("../models/user");
@@ -30,5 +45,6 @@ async function getPromoter(sponsorID) {
 
 
 module.exports = {
-    getPromoter
+    getPromoter,
+    checkParentCode
 }

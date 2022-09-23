@@ -19,7 +19,7 @@ const {
 } = require("../utils/functions.users");
 
 const { validateUserId } = require("../utils/validator");
-const { getPromoter } = require("../helpers/helpers");
+const { getPromoter, checkParentCode } = require("../helpers/helpers");
 
 async function registerNewUser(req, res) {
   try {
@@ -58,10 +58,9 @@ async function registerNewUser(req, res) {
       return res.status(400).json({ message: userStatusCodes[userStatus] });
     } */
     if (parent_ref_code) {
-      const promoterID = await getPromoter(parent_ref_code);
+      const promoterID = await checkParentCode(parent_ref_code);
       if (promoterID) {
-        console.log("Promoter ID :: ", promoterID);
-        let newUser = await addNewUser({ email, name, mobile_number, password, parent_ref_code, promoterID });
+        let newUser = await addNewUser({ email, name, mobile_number, password, parent_ref_code });
         console.log("new user :: ", newUser);
         if (!newUser) {
           return res.status(400).json({
