@@ -113,6 +113,45 @@ async function findparent(user_id) {
     }
 }
 
+async function findPomoter(parent_ref_code) {
+    const User = require("../models/user");
+    try {
+        const data = await User.aggregate([
+            { $match: { parent_ref_code: parent_ref_code } },
+            {
+                $graphLookup: {
+                    from: "user",
+                    startWith: "$user_id",
+                    connectFromField: "promoter_id",//promoter_id//parent_ref_code
+                    connectToField: "user_id",
+                    depthField: "level",
+                    as: "level",
+                },
+            },
+            {
+                $project: {
+                    user_id: 1,
+                    promoter_id: 1,
+                    parent_ref_code: 1
+                },
+            },
+        ]);
+
+        if (data && data.length > 0) {
+            console.log(data)
+            return data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        //getDirectAndtotalmember
+        console.log(
+            "Error from functions >> function >> findparent: ",
+            error.message
+        );
+    }
+}
+
 async function updateParent(user_id, amount) {
     try {
         const UserModel = require("../models/user");
@@ -198,5 +237,6 @@ module.exports = {
     updateParent, 
     provideSpIncome, 
     updateTotalBusiness,
-    updateParentNew
+    updateParentNew,
+    findPomoter
  };

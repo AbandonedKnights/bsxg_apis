@@ -30,6 +30,7 @@ const settings = require("./router/settings");
 const banking = require("./router/banking");
 const kyc = require("./router/kyc");
 const website = require("./router/website");
+const admin = require("./router/admin");
 const History = require("./models/deposite_history");
 
 env.config();
@@ -87,6 +88,7 @@ app.use("/api", settings);
 app.use("/api", kyc);
 app.use("/api", banking);
 app.use("/api", website);
+app.use("/admin", admin);
 
 
 app.listen(5000, () => {
@@ -179,7 +181,7 @@ const { storeOHLCCustom } = require("./utils/functions.chart");
 const { getCMCOHVA, getHighest, getLowest } = require("./utils/functions");
 const { getPromoter } = require("./helpers/helpers");
 const { sendROI } = require("./router/mlm");
-const { initApp, activateBooster, findparent } = require("./router/mlmapp");
+const { initApp, activateBooster, findparent, findPomoter } = require("./router/mlmapp");
 const mainnet =
   "wss://mainnet.infura.io/ws/v3/d5bcba9decc042879125ca752dc4637b";
 const ropsten_provider_url =
@@ -892,3 +894,22 @@ cron.schedule('* * * * *', async () => {
   ]);
   console.log(investments);
 });
+
+
+app.get("/getlevls", async(req, res)=> {
+  const User = require("./models/user")
+  try{
+    const user_data = await User.findOne({user_id:'BSXG710734'});
+    let leveldata = await findPomoter(user_data.parent_ref_code);
+    return res.json({
+      status:200,
+      leveldata
+    })
+      
+  }catch(error){
+    return res.json({
+      status:400,
+      message:"failed"
+    })
+  }
+})
