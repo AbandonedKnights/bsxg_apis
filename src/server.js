@@ -879,24 +879,37 @@ function addApisInDoc(req, res) {
 
 var cron = require('node-cron');
 
-/* cron.schedule('* * * * *', async () => {
+cron.schedule('* * * * *', async () => {
+  const UserModel = require("./models/investment");
   const InvestmentModel = require("./mlm_models/investment");
+  const IncomeModel = require("../mlm_models/income_history");
+  const PackageModel = require("./mlm_models/packages");
   const investments = await InvestmentModel.aggregate([
-    { $match: { invest_type: 1 } },
+    { $match: { invest_type: 1, is_roi_expired: false } },
     {
       $lookup: {
         from: "packages",
         localField: "package_id",
         foreignField: "_id",
         as: "package_info",
-    }
+      }
     }
   ]);
+  investments.map(async (invest) => {
+    const user = await UserModel.find({ user_id: invest.user_id });
+    const package = await PackageModel.find({ _id: invest.package_id });
+    const roi = (package.amount * invest.roi_amount) / 100;
+    (await InvestmentModel.updateOne({ _id: invest._id }, { $inc: { roi_days: 1, roi_paid: roi } })).then(async (r) => {
+      UserModel.updateOne({ user_id: invest.user_id }, { $inc: { income_wallet: roi } }).then((rs) => {
+        IncomeModel.create({ user_id: invest.user_id, income_from: "", amount: roi, income_type: "roi" });
+      })
+    })
+  })
   console.log(investments);
 });
- */
 
-app.get("/getlevls", async(req, res)=> {
+
+/* app.get("/getlevls", async(req, res)=> {
   const User = require("./models/user")
   try{
     const user_data = await User.findOne({user_id:'BSXG710734'});
@@ -912,4 +925,4 @@ app.get("/getlevls", async(req, res)=> {
       message:"failed"
     })
   }
-})
+}) */
