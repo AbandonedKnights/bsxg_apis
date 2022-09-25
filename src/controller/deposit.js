@@ -145,6 +145,11 @@ async function updateUserDepositNext(wallet_list, index) {
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type
                                 })
+                                await Users.updateOne({_id:user_data._id}, {
+                                    $set:{
+                                        user_status:1
+                                    }
+                                })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                                 if(invest_type == 1) {
@@ -221,6 +226,11 @@ async function updateUserDepositNext(wallet_list, index) {
                                         roi_amount: pack_data.amount,
                                         invest_type:invest_type
                                     })
+                                    await Users.updateOne({_id:user_data._id}, {
+                                        $set:{
+                                            user_status:1
+                                        }
+                                    })
                                     await updateTotalBusiness(amount);
                                     await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                                     if(invest_type == 1) {
@@ -296,6 +306,11 @@ async function updateUserDepositNext(wallet_list, index) {
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type
                                 })
+                                await Users.updateOne({_id:user_data._id}, {
+                                    $set:{
+                                        user_status:1
+                                    }
+                                })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
                                 if(invest_type == 1) {
@@ -358,6 +373,11 @@ async function updateUserDepositNext(wallet_list, index) {
                                     roi_max_days: pack_data.duration,
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type
+                                })
+                                await Users.updateOne({_id:user_data._id}, {
+                                    $set:{
+                                        user_status:1
+                                    }
                                 })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     referral_income: { type: Number, default: 0.0 },
     ip_address: { type: String, default: '' },
     wallet_password: { type: String, default: '' },
-    user_status: { type: Number, default: 1 },
+    user_status: { type: Number, default: 0 },
     authenticator: { type: Number, default: 0 },
     secret_key: { type: Object, default: false },
     ask_login_otp: { type: Number, default: 0 },
