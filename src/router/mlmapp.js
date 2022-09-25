@@ -117,7 +117,7 @@ async function findPomoter(parent_ref_code) {
     const User = require("../models/user");
     try {
         const data = await User.aggregate([
-            { $match: { parent_ref_code: parent_ref_code } },
+            { $match: { user_id: parent_ref_code } },
             {
                 $graphLookup: {
                     from: "user",

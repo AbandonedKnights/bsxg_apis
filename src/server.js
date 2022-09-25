@@ -879,7 +879,7 @@ function addApisInDoc(req, res) {
 
 var cron = require('node-cron');
 
-cron.schedule('* * * * *', async () => {
+/* cron.schedule('* * * * *', async () => {
   const InvestmentModel = require("./mlm_models/investment");
   const investments = await InvestmentModel.aggregate([
     { $match: { invest_type: 1 } },
@@ -894,13 +894,13 @@ cron.schedule('* * * * *', async () => {
   ]);
   console.log(investments);
 });
-
+ */
 
 app.get("/getlevls", async(req, res)=> {
   const User = require("./models/user")
   try{
     const user_data = await User.findOne({user_id:'BSXG710734'});
-    let leveldata = await findPomoter(user_data.parent_ref_code);
+    let leveldata = await findPomoter(user_data.user_id);
     return res.json({
       status:200,
       leveldata
