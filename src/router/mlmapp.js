@@ -64,7 +64,7 @@ async function activateBooster(userID, promoterID) {
         }
         let member = await getPromoter(promoterID);
         await UserModel.updateOne({_id: member._id},{$inc: {"directs": 1}})
-        await UserModel.updateOne({user_id: userID},{$set: {promoter_id: member.promoter_id}});
+        await UserModel.updateOne({user_id: userID},{$set: {promoter_id: member.user_id}});
     } catch (error) {
         console.log(error.message);
     }
