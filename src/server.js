@@ -199,7 +199,7 @@ const rinkibai =
 //connecting with socket server client
 // const socket = createSocketClient("kujgwvfq-z-ghosttown-z-1fhhup0p6");
 var cmc_last_time = Date.now();
-const cmc_interval = 5*60; //secounds
+const cmc_interval = 5 * 60; //secounds
 setInterval(async () => {
   if ((Date.now() - cmc_last_time) / 1000 >= cmc_interval) {
     let fs = require('fs');
@@ -225,17 +225,17 @@ setInterval(async () => {
         console.log("Err1");
       } else {
         data = data.data;
-         var coins2 = await formateData(data);
+        var coins2 = await formateData(data);
         let insertData = JSON.stringify(coins2);
-        fs.writeFile(__dirname+`/json/latest_coin_price.json`, insertData, 'utf8', (d) => {
+        fs.writeFile(__dirname + `/json/latest_coin_price.json`, insertData, 'utf8', (d) => {
           console.log(d);
-      });
+        });
       }
     } catch (error) {
       console.log("ERR", error);
     }
   }
-}, 5*1000);
+}, 5 * 1000);
 // for CMC
 async function formateData(data) {
   let coins = new Array();
@@ -251,7 +251,7 @@ async function formateData(data) {
     if (data[coin]["quote"]["USDT"]["percent_change_24h"] < 0)
       c.direction_inr = "down";
     else c.direction_inr = "up";
-    c.icon =`https://s2.coinmarketcap.com/static/img/coins/64x64/${c.id}.png`;
+    c.icon = `https://s2.coinmarketcap.com/static/img/coins/64x64/${c.id}.png`;
     c.volume_24h = data[coin]["quote"]["USDT"]["volume_change_24h"].toFixed(2);
     coins.unshift(c);
   }
@@ -872,5 +872,23 @@ function addApisInDoc(req, res) {
 }
 //getPromoter("BSXG10001")
 // initApp();
-activateBooster("BSXG183293b5b41/u");
-findparent("BSXG1834d5ca8c9").then((r)=>{console.log(r)}).catch((error)=>{console.log(error.message)});
+//activateBooster("BSXG183293b5b41/u");
+//findparent("BSXG1834d5ca8c9").then((r)=>{console.log(r)}).catch((error)=>{console.log(error.message)});
+
+var cron = require('node-cron');
+
+cron.schedule('* * * * *', async () => {
+  const InvestmentModel = require("./mlm_models/investment");
+  const investments = await InvestmentModel.aggregate([
+    { $match: { invest_type: 1 } },
+    {
+      $lookup: {
+        from: "packages",
+        localField: "package_id",
+        foreignField: "_id",
+        as: "package_info",
+    }
+    }
+  ]);
+  console.log(investments);
+});

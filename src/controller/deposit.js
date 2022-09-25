@@ -142,6 +142,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_amount: pack_data.amount,
                                     invest_type:invest_type
                                 })
                                 await updateTotalBusiness(amount);
@@ -217,6 +218,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                         user_id:user_id,
                                         package_id:pack_data._id,
                                         roi_max_days: pack_data.duration,
+                                        roi_amount: pack_data.amount,
                                         invest_type:invest_type
                                     })
                                     await updateTotalBusiness(amount);
@@ -291,6 +293,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_amount: pack_data.amount,
                                     invest_type:invest_type
                                 })
                                 await updateTotalBusiness(amount);
@@ -353,6 +356,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_amount: pack_data.amount,
                                     invest_type:invest_type
                                 })
                                 await updateTotalBusiness(amount);

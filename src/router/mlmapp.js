@@ -169,6 +169,7 @@ async function provideIncome(userID, spID, amount, income_type) {
         console.log(error.message);
     }
 }
+
 /// fetch team business
 async function calculateBusiness(userID) {
     try {
