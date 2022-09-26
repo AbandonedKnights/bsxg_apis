@@ -25,7 +25,8 @@ const {
     sendEmailCode,
     allUser,
     allInvestment,
-    setAdminInvest
+    setAdminInvest,
+    getDashboardData
 } = require('../controller/admin');
 const { validateEmail, validatePassword, validateConfirmPassword, validateEmailOrMobile } = require('../utils/middleware');
 
@@ -56,6 +57,7 @@ router.post("/verify_otp", validateEmailOrMobile, verifyUserOTP);
 router.post("/modify_user_profile", modifyUserProfile);
 router.post("/permanent_delete_user", permanentDeleteUser);
 router.post("/allusers", allUser);
-router.post("/allinvestment", allInvestment);
+router.post("/getAllInvestment", allInvestment);
 router.post("/set-admin-invest", setAdminInvest);
+router.post("/getDashboardData", getDashboardData);
 module.exports = router;

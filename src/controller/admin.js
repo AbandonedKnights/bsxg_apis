@@ -2675,11 +2675,11 @@ async function allInvestment(req, res) {
         const {admin_user_id} = req.body;
         const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
         if(admin_data) {
-            const data = await investdata.find({})
+            const totalInvestment = await investdata.find({});
             return res.json({
                 status:200,
-                len:data.length,
-                data,
+                len:totalInvestment.length,
+                totalInvestment,
                 error:false,
                 message:"success"
             })
@@ -2721,7 +2721,8 @@ async function setAdminInvest(req, res) {
                     package_id:pack_data._id,
                     roi_max_days: pack_data.duration,
                     roi_amount: pack_data.amount,
-                    invest_type:invest_type
+                    invest_type:invest_type,
+                    comments:msg
                 })
                 await User.updateOne({_id:user_data._id}, {
                     $set:{
@@ -2799,6 +2800,37 @@ async function getPackages(amount) {
 }
 
 
+async function getDashboardData(req, res) {
+    const investdata = require("../mlm_models/investment");
+    try {
+        const {admin_user_id} = req.body;
+        const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
+        if(admin_data) {
+            const totalInvestment = await investdata.find({});
+            return res.json({
+                status:200,
+                len:totalInvestment.length,
+                totalInvestment,
+                error:false,
+                message:"success"
+            })
+        } else {
+            return res.json({
+                status: 400,
+                error:true,
+                message:"invalid Users"
+            })
+        }
+    }catch(error) {
+        return res.json({
+            status:400,
+            error:true,
+            message:"somthing went Wrong!"
+        })
+    }
+}
+
+
 module.exports = {
   loginUser,
   resetPassword,
@@ -2825,5 +2857,6 @@ module.exports = {
   sendEmailCode,
   allUser,
   allInvestment,
-  setAdminInvest
+  setAdminInvest,
+  getDashboardData
 };
