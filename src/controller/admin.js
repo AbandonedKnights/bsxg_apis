@@ -18,6 +18,8 @@ const {
 
 const { validateUserId } = require("../utils/validator");
 const { getPromoter, checkParentCode } = require("../helpers/helpers");
+const { percent } = require("../utils/Math");
+const { updateTotalBusiness, updateParentNew, provideSpIncome, activateBooster } = require("../router/mlmapp");
 
 async function sendEmailVerificationCode(req, res) {
   try {
@@ -380,9 +382,6 @@ async function loginUser(req, res) {
     const params = [];
     if (email) {
       params.push({ email: email });
-    }
-    if (mobile) {
-      params.push({ mobile_number: mobile });
     }
     if (password) {
       //const user_data = await User.findOne({ email: email });
@@ -2639,6 +2638,167 @@ async function permanentDeleteUser(req, res) {
     });
   }
 }
+
+
+async function allUser(req, res) {
+    try {
+        const {admin_user_id} = req.body;
+        const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
+        if(admin_data) {
+            const data = await User.find({user_role:{$ne:1}})
+            return res.json({
+                status:200,
+                len:data.length,
+                data,
+                error:false,
+                message:"success"
+            })
+        } else {
+            return res.json({
+                status: 400,
+                error:true,
+                message:"invalid Users"
+            })
+        }
+    }catch(error) {
+        return res.json({
+            status:400,
+            error:true,
+            message:"somthing went Wrong!"
+        })
+    }
+}
+
+async function allInvestment(req, res) {
+    const investdata = require("../mlm_models/investment");
+    try {
+        const {admin_user_id} = req.body;
+        const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
+        if(admin_data) {
+            const data = await investdata.find({})
+            return res.json({
+                status:200,
+                len:data.length,
+                data,
+                error:false,
+                message:"success"
+            })
+        } else {
+            return res.json({
+                status: 400,
+                error:true,
+                message:"invalid Users"
+            })
+        }
+    }catch(error) {
+        return res.json({
+            status:400,
+            error:true,
+            message:"somthing went Wrong!"
+        })
+    }
+}
+
+async function setAdminInvest(req, res) {
+    const investment_data = require("../mlm_models/investment");
+    try {
+        const {admin_user_id, user_id, balance, msg} = req.body;
+        const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
+        const user_data = await User.findOne({user_id:user_id})
+        if(admin_data) {
+            let pack_data = await getPackages(balance);
+            let amount = pack_data.amount;
+            if(amount>50) {
+                let per_amount = percent(amount, 5)
+                //investment details
+                let invest_data = await investment_data.findOne({user_id:user_id,  package_id:pack_data._id})
+                let invest_type = 1;
+                if(invest_data) {
+                    invest_type=2;
+                }
+                await investment_data.create({
+                    user_id:user_id,
+                    package_id:pack_data._id,
+                    roi_max_days: pack_data.duration,
+                    roi_amount: pack_data.amount,
+                    invest_type:invest_type
+                })
+                await User.updateOne({_id:user_data._id}, {
+                    $set:{
+                        user_status:1
+                    },
+                    $inc: {
+                        babydoge_balance: 10000000
+                    }
+                })
+                await updateTotalBusiness(amount);
+                await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
+                if(invest_type == 1) {
+                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
+                }
+                await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+            }
+            return res.json({
+                status:200,
+                error:false,
+                message:"Investment Succesfully!"
+            })
+        } else {
+            return res.json({
+                status: 400,
+                error:true,
+                message:"invalid Users"
+            })
+        }
+    }catch(error) {
+        return res.json({
+            status:400,
+            error:true,
+            message:"somthing went Wrong!"
+        })
+    }
+}
+
+async function getPackages(amount) {
+    const packages_data = await packages.find({});
+    let pack_data;
+    if(amount>49 && amount<100) {
+        pack_data = packages_data.find((item)=>item.amount == 50);
+    }
+    if(amount>99 && amount<200) {
+        pack_data = packages_data.find((item)=>item.amount == 100);
+    }
+    if(amount>199 && amount<500) {
+        pack_data = packages_data.find((item)=>item.amount == 200);
+    }
+    if(amount>499 && amount<1000) {
+        pack_data = packages_data.find((item)=>item.amount == 500);
+    }
+    if(amount>999 && amount<1500) {
+        pack_data = packages_data.find((item)=>item.amount == 1000);
+    }
+    if(amount>1499 && amount<2000) {
+        pack_data = packages_data.find((item)=>item.amount == 1500);
+    }
+    if(amount>1999 && amount<3000) {
+        pack_data = packages_data.find((item)=>item.amount == 2000);
+    }
+    if(amount>2999 && amount<5000) {
+        pack_data = packages_data.find((item)=>item.amount == 3000);
+    }
+    if(amount>4999 && amount<10000) {
+        pack_data = packages_data.find((item)=>item.amount == 5000);
+    }
+    if(amount>9999 && amount<15000) {
+        pack_data = packages_data.find((item)=>item.amount == 10000);
+    }
+    if(amount>14999) {
+        pack_data = packages_data.find((item)=>item.amount == 15000);
+    }
+    return pack_data;
+}
+
+
 module.exports = {
   loginUser,
   resetPassword,
@@ -2662,5 +2822,8 @@ module.exports = {
   sendMobileVerificationCode,
   verifyUserOTP,
   getGoogleAuthNew,
-  sendEmailCode
+  sendEmailCode,
+  allUser,
+  allInvestment,
+  setAdminInvest
 };

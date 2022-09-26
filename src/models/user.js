@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema(
     team_business: { type: Number, default: 0 },
     direct_business: { type: Number, default: 0 },
     shiba_balance: { type: Number, default: 0 },
+    babydoge_balance: { type: Number, default: 0 },
     is_booster_active: { type: Boolean, default: false },
     admin_permission: { type: Array, default: [] }
   },

@@ -148,6 +148,9 @@ async function updateUserDepositNext(wallet_list, index) {
                                 await Users.updateOne({_id:user_data._id}, {
                                     $set:{
                                         user_status:1
+                                    },
+                                    $inc: {
+                                        babydoge_balance: 10000000
                                     }
                                 })
                                 await updateTotalBusiness(amount);

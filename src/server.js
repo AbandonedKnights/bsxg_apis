@@ -88,7 +88,7 @@ app.use("/api", settings);
 app.use("/api", kyc);
 app.use("/api", banking);
 app.use("/api", website);
-app.use("/admin", admin);
+app.use("/api", admin);
 
 
 app.listen(5000, () => {

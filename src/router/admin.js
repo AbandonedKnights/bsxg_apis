@@ -22,14 +22,17 @@ const {
     sendMobileVerificationCode,
     verifyUserOTP,
     getGoogleAuthNew,
-    sendEmailCode
+    sendEmailCode,
+    allUser,
+    allInvestment,
+    setAdminInvest
 } = require('../controller/admin');
 const { validateEmail, validatePassword, validateConfirmPassword, validateEmailOrMobile } = require('../utils/middleware');
 
 const router = express.Router();
 
 router.post("/varifie/forget-password", validateEmail, verifyForgetPassword);
-router.post("/login", loginUser);
+router.post("/admin/signin", loginUser);
 router.post("/forget-password", validateEmail, forgetPassword);
 router.post("/send-mail", validateEmail, sendEmailCode);
 router.post("/reset-password", validatePassword, resetPassword); 
@@ -52,4 +55,7 @@ router.post("/verify_otp", validateEmailOrMobile, verifyUserOTP);
 
 router.post("/modify_user_profile", modifyUserProfile);
 router.post("/permanent_delete_user", permanentDeleteUser);
+router.post("/allusers", allUser);
+router.post("/allinvestment", allInvestment);
+router.post("/set-admin-invest", setAdminInvest);
 module.exports = router;
