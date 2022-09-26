@@ -2738,12 +2738,19 @@ async function setAdminInvest(req, res) {
                     await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
                 }
                 await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
+                return res.json({
+                    status:200,
+                    error:false,
+                    message:"Investment Succesfully!"
+                })
+            } else {
+                return res.json({
+                    status:400,
+                    error:true,
+                    message:"Balance is greater than 50"
+                })
             }
-            return res.json({
-                status:200,
-                error:false,
-                message:"Investment Succesfully!"
-            })
+            
         } else {
             return res.json({
                 status: 400,
@@ -2752,6 +2759,7 @@ async function setAdminInvest(req, res) {
             })
         }
     }catch(error) {
+        console.log("error: admin", error)
         return res.json({
             status:400,
             error:true,
@@ -2761,6 +2769,7 @@ async function setAdminInvest(req, res) {
 }
 
 async function getPackages(amount) {
+    const packages = require("../mlm_models/packages");
     const packages_data = await packages.find({});
     let pack_data;
     if(amount>49 && amount<100) {

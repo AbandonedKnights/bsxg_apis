@@ -181,7 +181,7 @@ async function provideSpIncome(userID, spID, amount) {
         let amt =  sub(amount, per_amt)
         await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt, shiba_balance: 10000 } })
         await IncomeModel.create({ user_id: spID, income_from: userID, amount: amt, income_type: "referral" });
-        helpingHand.updateOne({}, { $inc: { helping_hand: per_amt, total_shiba:10000 } })
+        await helpingHand.updateOne({}, { $inc: { helping_hand: per_amt, total_shiba:10000 } })
     } catch (error) {
         console.log(error.message);
     }
@@ -190,7 +190,7 @@ async function provideSpIncome(userID, spID, amount) {
 async function updateTotalBusiness(amount) {
     try {
         const helpingHand = require("../mlm_models/admin");
-        helpingHand.updateOne({}, { $inc: { total_business: amount, total_babydoge: 10000000 } })
+        await helpingHand.updateOne({}, { $inc: { total_business: amount, total_babydoge: 10000000 } })
     } catch (error) {
         console.log(error.message);
     }

@@ -202,7 +202,7 @@ async function getUserReferalInfo(req, res) {
         const { reffer, user_id } = req.body;
         if (reffer) {
             let profile_data = {};
-            const user_data = await Users.findOne({ self_ref_code: reffer, user_status:1 });
+            const user_data = await Users.findOne({ self_ref_code: reffer });
             if (user_data) {
                 profile_data.user = user_data.user_id;
                 profile_data.name = user_data.name;
@@ -220,7 +220,7 @@ async function getUserReferalInfo(req, res) {
                 })
             }
         } else if(user_id) {
-            const user_data = await Users.findOne({ user_id: user_id, user_status:1 });
+            const user_data = await Users.findOne({ user_id: user_id });
             if (user_data) {
                 self_ref_code = user_data.self_ref_code;
                 return res.json({
