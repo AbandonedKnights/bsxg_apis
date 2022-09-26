@@ -8,7 +8,8 @@ const schema = new mongoose.Schema({
     roi_amount: { type: Number, default:0 },
     roi_paid: { type: Number, default:0 },
     invest_type: {type:Number, default:1},
-    is_roi_expired: {type: Boolean, default: false}
+    is_roi_expired: {type: Boolean, default: false},
+    comments:{ type: String }
 }, { timestamps: true, collection: 'investment' });
 
 module.exports = mongoose.model("investment", schema);

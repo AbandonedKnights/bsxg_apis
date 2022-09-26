@@ -143,7 +143,8 @@ async function updateUserDepositNext(wallet_list, index) {
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
                                     roi_amount: pack_data.amount,
-                                    invest_type:invest_type
+                                    invest_type:invest_type,
+                                    comments: wallet.wallet_type+" coin Deposited"
                                 })
                                 await Users.updateOne({_id:user_data._id}, {
                                     $set:{
@@ -227,11 +228,15 @@ async function updateUserDepositNext(wallet_list, index) {
                                         package_id:pack_data._id,
                                         roi_max_days: pack_data.duration,
                                         roi_amount: pack_data.amount,
-                                        invest_type:invest_type
+                                        invest_type:invest_type,
+                                        comments: wallet.wallet_type+" coin Deposited"
                                     })
                                     await Users.updateOne({_id:user_data._id}, {
                                         $set:{
                                             user_status:1
+                                        },
+                                        $inc: {
+                                            babydoge_balance: 10000000
                                         }
                                     })
                                     await updateTotalBusiness(amount);
@@ -307,11 +312,15 @@ async function updateUserDepositNext(wallet_list, index) {
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
                                     roi_amount: pack_data.amount,
-                                    invest_type:invest_type
+                                    invest_type:invest_type,
+                                    comments: wallet.wallet_type+" coin Deposited"
                                 })
                                 await Users.updateOne({_id:user_data._id}, {
                                     $set:{
                                         user_status:1
+                                    },
+                                    $inc: {
+                                        babydoge_balance: 10000000
                                     }
                                 })
                                 await updateTotalBusiness(amount);
@@ -375,11 +384,15 @@ async function updateUserDepositNext(wallet_list, index) {
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
                                     roi_amount: pack_data.amount,
-                                    invest_type:invest_type
+                                    invest_type:invest_type,
+                                    comments: wallet.wallet_type+" coin Deposited"
                                 })
                                 await Users.updateOne({_id:user_data._id}, {
                                     $set:{
                                         user_status:1
+                                    },
+                                    $inc: {
+                                        babydoge_balance: 10000000
                                     }
                                 })
                                 await updateTotalBusiness(amount);
