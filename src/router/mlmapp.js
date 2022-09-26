@@ -190,7 +190,7 @@ async function provideSpIncome(userID, spID, amount) {
 async function updateTotalBusiness(amount) {
     try {
         const helpingHand = require("../mlm_models/admin");
-        helpingHand.updateOne({}, { $inc: { total_business: amount} })
+        helpingHand.updateOne({}, { $inc: { total_business: amount, total_babydoge: 10000000 } })
     } catch (error) {
         console.log(error.message);
     }
