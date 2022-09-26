@@ -2801,16 +2801,22 @@ async function getPackages(amount) {
 
 
 async function getDashboardData(req, res) {
-    const investdata = require("../mlm_models/investment");
+    const admin = require("../mlm_models/admin");
     try {
         const {admin_user_id} = req.body;
         const admin_data = await User.findOne({user_id:admin_user_id, user_role:1})
         if(admin_data) {
-            const totalInvestment = await investdata.find({});
+            const totalUsers = await User.find().count();
+            const admin_record = await admin.findOne({});
             return res.json({
                 status:200,
-                len:totalInvestment.length,
-                totalInvestment,
+                data:{
+                    totalUsers:totalUsers,
+                    totalInvestment: admin_record.total_business,
+                    helping_hand: admin_record.helping_hand,
+                    total_shiba: admin_record.total_shiba,
+                    total_babydoge: admin_record.total_babydoge
+                },
                 error:false,
                 message:"success"
             })
