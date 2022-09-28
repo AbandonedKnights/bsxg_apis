@@ -142,6 +142,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_percent:pack_data.profit,
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type,
                                     comments: wallet.wallet_type+" coin Deposited"
@@ -227,6 +228,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                         user_id:user_id,
                                         package_id:pack_data._id,
                                         roi_max_days: pack_data.duration,
+                                        roi_percent:pack_data.profit,
                                         roi_amount: pack_data.amount,
                                         invest_type:invest_type,
                                         comments: wallet.wallet_type+" coin Deposited"
@@ -311,6 +313,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_percent:pack_data.profit,
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type,
                                     comments: wallet.wallet_type+" coin Deposited"
@@ -383,6 +386,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     user_id:user_id,
                                     package_id:pack_data._id,
                                     roi_max_days: pack_data.duration,
+                                    roi_percent:pack_data.profit,
                                     roi_amount: pack_data.amount,
                                     invest_type:invest_type,
                                     comments: wallet.wallet_type+" coin Deposited"
@@ -592,7 +596,7 @@ async function sendAdminTransfer(d) {
                 // console.log(dt['data'][0], "trx");
                     // trc10 = dt['data'][0].assetV2 ? dt['data'][0].assetV2 : [];
                     // trc20 = dt['data'][0].trc20.length > 0 ? dt['data'][0].trc20 : [];
-                    let trx_balance = dt['data'][0].balance;
+                    let trx_balance = dt['data'][0].balance?dt['data'][0].balance:0;
                     let tbal = trx_balance ? trx_balance / decimal : 0;
                     if (tbal > 10) {
                         return true;

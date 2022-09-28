@@ -1,5 +1,5 @@
 const { getPromoter } = require("../helpers/helpers");
-const { percent, sub } = require("../utils/Math");
+const { percent, sub, mul, div } = require("../utils/Math");
 
 const packages = [
     { name: "Associate", amount: 50, profit: 2, duration: 1000, total_trades: 200, restake: 50 },
@@ -55,12 +55,19 @@ async function activateBoosterold(userID, promoterID) {
 async function activateBooster(userID, promoterID) {
     try {
         const UserModel = require("../models/user");
+        const investdata = require("../mlm_models/investment");
         const moment = require("moment");
         const user = await UserModel.findOne({ user_id: promoterID });
         const isBetween25D = moment().isBetween(moment(new Date(user.createdAt)), moment(new Date(user.createdAt)).add(25, 'd'));
-        console.log(user.directs >= 5 && isBetween25D);
-        if(user.directs >= 5 && isBetween25D) {
+        console.log(user.directs > 4 && isBetween25D);
+        if(user.directs > 4 && isBetween25D) {
+            let invest_data = await investdata.findOne({user_id:user.user_id});
             await UserModel.updateOne({_id: user._id},{$set: {is_booster_active: true}});
+            let per_roi = mul(invest_data.roi_percent, 2)
+            let day_roi = div(invest_data.roi_max_days, 2)
+            await investdata.updateOne({_id:invest_data._id}, {$set:{roi_max_days:day_roi, roi_percent:per_roi}})
+
+
         }
         let member = await getPromoter(promoterID);
         await UserModel.updateOne({_id: member._id},{$inc: {"directs": 1}})
