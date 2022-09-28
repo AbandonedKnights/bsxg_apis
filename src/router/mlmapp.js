@@ -172,16 +172,21 @@ async function updateParentNew(user_id, amount) {
     }
 }
 
-async function provideSpIncome(userID, spID, amount) {
+async function provideSpIncome(userID, spID, amount, invest_type) {
     try {
         const UserModel = require("../models/user");
         const IncomeModel = require("../mlm_models/income_history");
         const helpingHand = require("../mlm_models/admin");
         let per_amt = percent(amount, 1);
         let amt =  sub(amount, per_amt)
-        await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt, shiba_balance: 10000 } })
+        if(invest_type == 1) {
+            await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt, shiba_balance: 10000 } })
+            await helpingHand.updateOne({}, { $inc: { helping_hand: per_amt, total_shiba:10000 } })
+        } else {
+            await UserModel.updateOne({ user_id: spID }, { $inc: { income_wallet: amt } })
+            await helpingHand.updateOne({}, { $inc: { helping_hand: per_amt } })
+        }
         await IncomeModel.create({ user_id: spID, income_from: userID, amount: amt, income_type: "referral" });
-        await helpingHand.updateOne({}, { $inc: { helping_hand: per_amt, total_shiba:10000 } })
     } catch (error) {
         console.log(error.message);
     }
