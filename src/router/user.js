@@ -13,7 +13,8 @@ const {
   getAllReferalNotKYC,
   getReferals,
   getUsersActivity,
-  getUserReferalInfo
+  getUserReferalInfo,
+  getDashboardData
 } = require("../controller/user");
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.get("/getactivekyc", getActiveKYC);
 router.get("/user/edit/UserEdit", kycUser);
 router.post("/user/get-profile-info", getUserProfile);
 router.post("/getRefferalInfo", getUserReferalInfo);
+router.post("/getdashboard", getDashboardData);
+
 router.post("/user/get-referal-info", getReferalInfo);
 router.get("/user/get-referal-info", getReferalInfo);
 router.post("/user/get-referals", getReferals);

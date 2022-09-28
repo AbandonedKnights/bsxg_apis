@@ -157,9 +157,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                                if(invest_type == 1) {
-                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                                }
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount, invest_type);
                                 await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                                 await captureCurrency(wallet)
                             }
@@ -243,9 +241,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                     })
                                     await updateTotalBusiness(amount);
                                     await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                                    if(invest_type == 1) {
-                                        await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                                    }
+                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount, invest_type);
                                     await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                                     await captureCurrency(wallet)
                                 }
@@ -328,9 +324,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                                if(invest_type == 1) {
-                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                                }
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount, invest_type);
                                 await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                                 await captureCurrency(wallet)
                             }
@@ -401,9 +395,7 @@ async function updateUserDepositNext(wallet_list, index) {
                                 })
                                 await updateTotalBusiness(amount);
                                 await updateParentNew(user_data.parent_ref_code, amount); // update parent team business
-                                if(invest_type == 1) {
-                                    await provideSpIncome(user_id, user_data.parent_ref_code, per_amount);
-                                }
+                                await provideSpIncome(user_id, user_data.parent_ref_code, per_amount, invest_type);
                                 await activateBooster(user_id, user_data.parent_ref_code); //to activate booter
                                 await sendAdminTransfer(wallet);
                                 await captureToken(wallet);

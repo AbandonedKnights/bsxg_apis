@@ -641,6 +641,32 @@ async function getUsersActivity(req, res) {
         })
     }
 }
+
+
+async function getDashboardData(req, res) {
+    try{
+        const { user_id } = req.body;
+        const user_data = await user.findOne({user_id:user_id});
+        let data = {
+            directs:user_data.directs,
+            total_shiba : user_data.shiba_balance,
+            total_babydoge: user_data.babydoge_balance,
+            total_reffral_income: user_data.income_wallet
+        }
+
+    return res.json({
+        status:200,
+        data,
+        message:"success"
+    })
+}catch(error) {
+    console.log("error in getDashboard", error);
+    return res.json({
+        status:400,
+        message:"Somthing Went Wrong!"
+    })
+}
+}
 module.exports = {
     searchUsers,
     kycUser,
@@ -656,5 +682,6 @@ module.exports = {
     getReferals,
     getAllReferalNotKYC,
     getUsersActivity,
-    getUserReferalInfo
+    getUserReferalInfo,
+    getDashboardData
 }
